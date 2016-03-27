@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.loc.gov/METS/" xmlns:ead="urn:isbn:1-931666-22-9" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mag="http://www.iccu.sbn.it/metaAG1.pdf" xmlns:mix="http://www.loc.gov/mix/v20" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <xs:import namespace="http://www.iccu.sbn.it/metaAG1.pdf" schemaLocation="mag.xsd"/>
+  <xs:import namespace="http://www.loc.gov/mix/v20" schemaLocation="mix.xsd"/>
+  <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+  <xs:import namespace="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="xsi.xsd"/>
+  <xs:import namespace="urn:isbn:1-931666-22-9" schemaLocation="ead.xsd"/>
+  <xs:element name="mets">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mets:metsHdr"/>
+        <xs:element ref="mets:dmdSec"/>
+        <xs:element ref="mets:amdSec"/>
+        <xs:element ref="mets:fileSec"/>
+        <xs:element ref="mets:structMap"/>
+      </xs:sequence>
+      <xs:attribute ref="xsi:schemaLocation" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="metsHdr">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mets:agent"/>
+      </xs:sequence>
+      <xs:attribute name="CREATEDATE" use="required" type="xs:dateTime"/>
+      <xs:attribute name="LASTMODDATE" use="required" type="xs:dateTime"/>
+      <xs:attribute name="RECORDSTATUS" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="agent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mets:name"/>
+        <xs:element ref="mets:note"/>
+      </xs:sequence>
+      <xs:attribute name="ROLE" use="required" type="xs:NCName"/>
+      <xs:attribute name="TYPE" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="note" type="xs:anyURI"/>
+  <xs:element name="dmdSec">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="mets:mdWrap">
+          <xs:attribute name="ID" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="amdSec">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="mets:techMD"/>
+        <xs:element ref="mets:sourceMD"/>
+        <xs:element ref="mets:digiprovMD"/>
+      </xs:sequence>
+      <xs:attribute name="ID" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="techMD">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="mets:mdWrap">
+          <xs:attribute name="ID" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sourceMD">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="mets:mdWrap">
+          <xs:attribute name="ID" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="digiprovMD">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="mets:mdWrap">
+          <xs:attribute name="ID" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fileSec">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mets:fileGrp"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fileGrp">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="mets:file"/>
+      </xs:sequence>
+      <xs:attribute name="USE" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="file">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mets:FLocat"/>
+      </xs:sequence>
+      <xs:attribute name="ADMID" use="required" type="xs:NCName"/>
+      <xs:attribute name="CHECKSUM" use="required"/>
+      <xs:attribute name="CHECKSUMTYPE" use="required" type="xs:NCName"/>
+      <xs:attribute name="CREATED" use="required" type="xs:dateTime"/>
+      <xs:attribute name="GROUPID" use="required" type="xs:NCName"/>
+      <xs:attribute name="ID" use="required" type="xs:NCName"/>
+      <xs:attribute name="MIMETYPE" use="required"/>
+      <xs:attribute name="SEQ" use="required" type="xs:integer"/>
+      <xs:attribute name="SIZE" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FLocat">
+    <xs:complexType>
+      <xs:attribute name="LOCTYPE" use="required" type="xs:NCName"/>
+      <xs:attribute ref="xlink:href" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="structMap">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mets:div"/>
+      </xs:sequence>
+      <xs:attribute name="TYPE" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="mdWrap">
+    <xs:sequence>
+      <xs:element ref="mets:mdWrap"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="mdWrap">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mets:xmlData"/>
+      </xs:sequence>
+      <xs:attribute name="MDTYPE" use="required" type="xs:NCName"/>
+      <xs:attribute name="OTHERMDTYPE"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="xmlData">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="mag:gen"/>
+        <xs:element ref="mag:holdings"/>
+        <xs:element ref="mix:mix"/>
+        <xs:element ref="ead:ead"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="div">
+    <xs:complexType>
+      <xs:sequence minOccurs="0">
+        <xs:element ref="mets:div"/>
+        <xs:element maxOccurs="unbounded" ref="mets:fptr"/>
+      </xs:sequence>
+      <xs:attribute name="LABEL"/>
+      <xs:attribute name="ORDER" type="xs:integer"/>
+      <xs:attribute name="TYPE" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fptr">
+    <xs:complexType>
+      <xs:attribute name="FILEID" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ead.p">
+    <xs:sequence>
+      <xs:element ref="ead:p"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="mix.numerator">
+    <xs:sequence>
+      <xs:element ref="mix:numerator"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

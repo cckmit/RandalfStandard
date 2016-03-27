@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:include schemaLocation="F_3.00.xsd"/>
+  <xs:element name="csm_root">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="csm_info"/>
+        <xs:element ref="schede"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="csm_info">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="nome_normativa"/>
+        <xs:element ref="tipo"/>
+        <xs:element ref="ver_numero"/>
+        <xs:element ref="data_crea"/>
+        <xs:element ref="ente_schedatore"/>
+        <xs:element ref="concessione"/>
+        <xs:element ref="spedizione"/>
+        <xs:element ref="note"/>
+        <xs:element ref="numero_schede"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="nome_normativa" type="xs:NCName"/>
+  <xs:element name="tipo" type="xs:string"/>
+  <xs:element name="ver_numero" type="xs:decimal"/>
+  <xs:element name="data_crea" type="xs:integer"/>
+  <xs:element name="ente_schedatore" type="xs:NCName"/>
+  <xs:element name="concessione">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="spedizione">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="note">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="numero_schede" type="xs:integer"/>
+  <xs:element name="schede">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="scheda"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

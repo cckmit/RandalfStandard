@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mx.randalf.dc</groupId>
+  <artifactId>RandalfDC</artifactId>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+  </properties>
+  <dependencies>
+    <dependency>
+    	<groupId>mx.randalf.xsd</groupId>
+    	<artifactId>RandalfXsd</artifactId>
+    	<version>1.0.3</version>
+    </dependency>
+  </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>mvn-bncf</id>
+      <name>Maven BNCF-releases</name>
+      <url>http://maven.bncf.firenze.sbn.it/artifactory/libs-release-local</url>
+    </repository>
+  </distributionManagement>
+  <parent>
+  	<groupId>mx.randalf.standard</groupId>
+  	<artifactId>RandalfStandard</artifactId>
+  	<version>1.0.0</version>
+  </parent>
+</project>

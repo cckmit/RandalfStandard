@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  targetNamespace="http://www.iccu.sbn.it/metaAG1.pdf" xmlns:ead="urn:isbn:1-931666-22-9"
+  xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:mag="http://www.iccu.sbn.it/metaAG1.pdf" xmlns:mix="http://www.loc.gov/mix/v20"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- xs:import namespace="http://www.iccu.sbn.it/metaAG1.pdf" schemaLocation="mag.xsd"/ -->
+  <xs:import namespace="http://www.loc.gov/mix/v20"
+    schemaLocation="http://www.loc.gov/standards/mix/mix20/mix20.xsd"/>
+  <!--
+  <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+  <xs:import namespace="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="xsi.xsd"/>
+  -->
+  <xs:import namespace="urn:isbn:1-931666-22-9" schemaLocation="ead.xsd"/>
+  <xs:element name="gen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mag:stprog"/>
+        <xs:element ref="mag:collection"/>
+        <xs:element ref="mag:access_rights"/>
+        <xs:element ref="mag:agency"/>
+        <xs:element ref="mag:completeness"/>
+      </xs:sequence>
+      <xs:attribute name="creation" use="required" type="xs:dateTime"/>
+      <xs:attribute name="last_update" use="required" type="xs:dateTime"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stprog" type="xs:anyURI"/>
+  <xs:element name="collection" type="xs:anyURI"/>
+  <xs:element name="access_rights" type="xs:integer"/>
+  <xs:element name="agency" type="xs:string"/>
+  <xs:element name="completeness" type="xs:integer"/>
+  <xs:element name="holdings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="mag:shelfmark"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="shelfmark" type="xs:string"/>
+</xs:schema>
