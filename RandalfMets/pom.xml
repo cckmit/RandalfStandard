@@ -19,7 +19,7 @@
   	<dependency>
   		<groupId>mx.randalf.xsd</groupId>
   		<artifactId>RandalfXsd</artifactId>
-  		<version>1.0.5</version>
+  		<version>1.0.6</version>
   	</dependency>
   	<dependency>
   		<groupId>mx.randalf.digest</groupId>
@@ -34,7 +34,7 @@
   	<dependency>
   		<groupId>mx.randalf.mag</groupId>
   		<artifactId>RandalfMag</artifactId>
-  		<version>1.0.9</version>
+  		<version>1.0.12</version>
   	</dependency>
   	<dependency>
   		<groupId>mx.teca2015.tecaExport.schema</groupId>
