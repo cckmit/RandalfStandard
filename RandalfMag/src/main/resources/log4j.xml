@@ -77,7 +77,7 @@
     </category>
     
     <category name="org.hibernate">
-        <level value="WARN" />
+        <level value="ERROR" />
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="STDERR"/>
     </category>
