@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mx.randalf.mets</groupId>
   <artifactId>RandalfMets</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
@@ -17,29 +17,19 @@
 </distributionManagement>
   <dependencies>
   	<dependency>
-  		<groupId>mx.randalf.xsd</groupId>
-  		<artifactId>RandalfXsd</artifactId>
-  		<version>1.0.6</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>mx.randalf.digest</groupId>
-  		<artifactId>RandalfDigest</artifactId>
-  		<version>1.0.1</version>
-  	</dependency>
-  	<dependency>
   		<groupId>mx.randalf.schedaF</groupId>
   		<artifactId>RandalfSchedaF</artifactId>
-  		<version>1.0.0</version>
+  		<version>1.0.1</version>
   	</dependency>
   	<dependency>
   		<groupId>mx.randalf.mag</groupId>
   		<artifactId>RandalfMag</artifactId>
-  		<version>1.0.13</version>
+  		<version>1.0.14</version>
   	</dependency>
   	<dependency>
   		<groupId>mx.teca2015.tecaExport.schema</groupId>
   		<artifactId>TecaSchemaEad</artifactId>
-  		<version>1.0.2</version>
+  		<version>1.0.3</version>
   	</dependency>
   </dependencies>
   <parent>
