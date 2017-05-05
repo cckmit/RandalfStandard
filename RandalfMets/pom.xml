@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mx.randalf.mets</groupId>
   <artifactId>RandalfMets</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
@@ -24,7 +24,7 @@
   	<dependency>
   		<groupId>mx.randalf.mag</groupId>
   		<artifactId>RandalfMag</artifactId>
-  		<version>1.0.14</version>
+  		<version>1.0.15</version>
   	</dependency>
   	<dependency>
   		<groupId>mx.teca2015.tecaExport.schema</groupId>
