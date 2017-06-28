@@ -27,6 +27,7 @@ import org.niso.pdfs.datadict.ImgMimetype;
 import org.niso.pdfs.datadict.Photometricinterpretationtype;
 import org.niso.pdfs.datadict.Dimensions;
 import org.niso.pdfs.datadict.Spatialmetrics;
+import org.purl.dc.elements._1.SimpleLiteral;
 
 import mx.randalf.interfacException.exception.PubblicaException;
 import mx.randalf.parser.Parser;
@@ -123,12 +124,24 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		return result;
 	}
 
+	public void calcImg(Img img, boolean basic, String pathMag) throws XsdException{
+		calcImg(img, basic, pathMag, true, null);
+	}
+
 	public void calcImg(Img img, String pathMag) throws XsdException{
 		calcImg(img, pathMag, true, null);
 	}
 
+	public void calcImg(Img img, boolean basic, String pathMag, boolean anaAltImg) throws XsdException{
+		calcImg(img, basic, pathMag, anaAltImg, null);
+	}
+
 	public void calcImg(Img img, String pathMag, boolean anaAltImg) throws XsdException{
 		calcImg(img, pathMag, anaAltImg, null);
+	}
+
+	public void calcImg(Img img, boolean basic, String pathMag, String[] usages) throws XsdException{
+		calcImg(img, basic, pathMag, true, usages);
 	}
 
 	public void calcImg(Img img, String pathMag, String[] usages) throws XsdException{
@@ -136,6 +149,10 @@ public class MagXsd extends ReadXsd<Metadigit> {
 	}
 
 	public void calcImg(Img img, String pathMag, boolean anaAltImg, String[] usages) throws XsdException{
+		calcImg(img, false, pathMag, anaAltImg, usages);
+	}
+
+	public void calcImg(Img img, boolean basic, String pathMag, boolean anaAltImg, String[] usages) throws XsdException{
 		CalcImg calcImg = null;
 		File fImg = null;
 		
@@ -146,7 +163,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 							img.getFile().getHref() != null){
 						fImg = new File (pathMag+File.separator+img.getFile().getHref().replace("./", ""));
 						if (fImg.exists()){
-							calcImg = new CalcImg(fImg);
+							calcImg = new CalcImg(fImg,basic);
 							readImg(img, calcImg, fImg);
 						} else {
 							throw new XsdException("Il file ["+fImg.getAbsolutePath()+"] non è presente");
@@ -404,7 +421,10 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		String compression = null;
 
 		compression = calcImg.getInfo().getProperty("Compression");
-		if (compression.equalsIgnoreCase("None")) {
+		if (compression == null){
+			compression = calcImg.getInfo().getProperty("Compression", 0);
+		}
+		if (compression == null || compression.equalsIgnoreCase("None")) {
 			ris = CompressiontypeNiso.UNCOMPRESSED;
 		} else if (compression.equalsIgnoreCase("JPEG")){
 			ris = CompressiontypeNiso.JPG;
@@ -447,4 +467,18 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		return ris;
 	}
 
+	public SimpleLiteral genSimpleLiteral(String value){
+		return genSimpleLiteral(value, null);
+	}
+
+	public SimpleLiteral genSimpleLiteral(String value, String lang){
+		SimpleLiteral simpleLiteral = null;
+		
+		simpleLiteral = new SimpleLiteral();
+		if (lang != null){
+			simpleLiteral.setLang(lang);
+		}
+		simpleLiteral.getContent().add(value);
+		return simpleLiteral;
+	}
 }
