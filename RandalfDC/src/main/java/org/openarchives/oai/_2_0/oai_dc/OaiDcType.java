@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.purl.dc.elements._1.ElementType;
 
@@ -53,6 +54,7 @@ import org.purl.dc.elements._1.ElementType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="oai_dc")
 @XmlType(name = "oai_dcType", propOrder = {
     "titleOrCreatorOrSubject"
 })
