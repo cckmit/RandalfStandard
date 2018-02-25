@@ -35,9 +35,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
-import mx.randalf.schedaF.CsmRoot;
-
 import org.purl.dc.elements._1.SimpleLiteral;
+
+import mx.randalf.schedaF.CsmRoot;
 
 
 /**

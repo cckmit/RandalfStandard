@@ -8,6 +8,7 @@ import java.io.FileFilter;
 import java.math.BigInteger;
 import java.util.Arrays;
 
+import org.apache.log4j.Logger;
 import org.niso.pdfs.datadict.Dimensions;
 import org.purl.dc.elements._1.SimpleLiteral;
 
@@ -27,6 +28,8 @@ import mx.randalf.xsd.exception.XsdException;
  *
  */
 public class GenMagCmd {
+
+	private Logger log = Logger.getLogger(GenMagCmd.class);
 
 	/**
 	 * 
@@ -67,19 +70,19 @@ public class GenMagCmd {
 						if (pathIntranet.exists()){
 							genMag(pathMag.getName(), pathArchivio, fileMag);
 						} else {
-							System.out.println("La cartella ["+pathIntranet.getAbsolutePath()+"] non esiste");
+							log.error("\n"+"La cartella ["+pathIntranet.getAbsolutePath()+"] non esiste");
 						}
 					} else {
-						System.out.println("La cartella ["+pathInternet.getAbsolutePath()+"] non esiste");
+						log.error("\n"+"La cartella ["+pathInternet.getAbsolutePath()+"] non esiste");
 					}
 				} else {
-					System.out.println("La cartella ["+pathArchivio.getAbsolutePath()+"] non esiste");
+					log.error("\n"+"La cartella ["+pathArchivio.getAbsolutePath()+"] non esiste");
 				}
 			} else {
-				System.out.println("Il file ["+fileMag.getAbsolutePath()+"] esiste");
+				log.error("\n"+"Il file ["+fileMag.getAbsolutePath()+"] esiste");
 			}
 		} else {
-			System.out.println("La cartella ["+pathMag.getAbsolutePath()+"] non esiste");
+			log.error("\n"+"La cartella ["+pathMag.getAbsolutePath()+"] non esiste");
 		}
 	}
 

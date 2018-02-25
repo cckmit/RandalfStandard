@@ -189,7 +189,6 @@ public class GenOcr {
 
 		try {
 			magXsd = new MagXsd();
-			md5 = new MD5();
 			fXmlOcr = new File(fMag.getAbsolutePath() + ".ocr");
 			if (!fXmlOcr.exists()) {
 				fXmlCert = new File(fMag.getAbsolutePath() + ".cert");
@@ -237,7 +236,8 @@ public class GenOcr {
 														+ df.format(conta)
 														+ ".txt");
 												ocr.setFile(ocrFile);
-												ocr.setMd5(md5.getDigest(fOcr));
+												md5 = new MD5(fOcr);
+												ocr.setMd5(md5.getDigest());
 												ocr.setSource(mag.getImg()
 														.get(x).getFile());
 												ocr.setFilesize(BigInteger
@@ -303,8 +303,8 @@ public class GenOcr {
 		BufferedWriter bwOcr = null;
 
 		try {
-			md5Tools = new MD5();
-			md5 = md5Tools.getDigest(fMag);
+			md5Tools = new MD5(fMag);
+			md5 = md5Tools.getDigest();
 
 			fXmlOcr = new File(fMag.getAbsolutePath() + ".ocr");
 			fwOcr = new FileWriter(fXmlOcr);

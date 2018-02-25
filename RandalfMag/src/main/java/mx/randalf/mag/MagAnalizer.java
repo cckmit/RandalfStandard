@@ -152,10 +152,10 @@ public class MagAnalizer {
 			magXsd = new MagXsd();
 			mag = magXsd.read(file);
 			if (!fCert.exists()) {
-				log.info("Analizzo il file ["+file.getAbsolutePath()+"]");
+				log.info("\n"+"Analizzo il file ["+file.getAbsolutePath()+"]");
 				if (collection != null) {
 					if (!mag.getGen().getCollection().equals(collection)) {
-						log.warn("Nel file [" + file.getAbsolutePath()
+						log.warn("\n"+"Nel file [" + file.getAbsolutePath()
 								+ "] risulta la collection ["
 								+ mag.getGen().getCollection()
 								+ "] invece di [" + collection + "]");
@@ -185,7 +185,7 @@ public class MagAnalizer {
 					}
 					if (identifierDuplicate.containsKey(key)) {
 						isError = true;
-						log.error("Mag con Identificativi duplicati ["
+						log.error("\n"+"Mag con Identificativi duplicati ["
 								+ identifierDuplicate.get(key) + "] e ["
 								+ file.getAbsolutePath() + "]");
 					} else {
@@ -232,7 +232,7 @@ public class MagAnalizer {
 					}
 					if (identifierDuplicate.containsKey(key)) {
 						isError = true;
-						log.error("Mag con Identificativi duplicati ["
+						log.error("\n"+"Mag con Identificativi duplicati ["
 								+ identifierDuplicate.get(key) + "] e ["
 								+ file.getAbsolutePath() + "]");
 					} else {
@@ -242,7 +242,7 @@ public class MagAnalizer {
 				
 			}
 		} catch (XsdException e) {
-			log.error("FILE con problemi di Parsing: "+file.getAbsolutePath());
+			log.error("\n"+"FILE con problemi di Parsing: "+file.getAbsolutePath());
 			log.error(e.getMessage(), e);
 		} catch (PubblicaException e) {
 			log.error(e.getMessage(), e);
@@ -268,7 +268,7 @@ public class MagAnalizer {
 				}
 			} else {
 				isError = true;
-				log.error("Nel file ["
+				log.error("\n"+"Nel file ["
 						+ file.getAbsolutePath()
 						+ "] nell'immagine numero ["
 						+ (x + 1)
@@ -280,7 +280,7 @@ public class MagAnalizer {
 				if (altimg.getFile().getHref()
 						.indexOf("/" + folderUsage1 + "/") == -1) {
 					isError = true;
-					log.error("Nel file ["
+					log.error("\n"+"Nel file ["
 							+ file.getAbsolutePath()
 							+ "] nell'immagine numero ["
 							+ (x + 1)
@@ -290,7 +290,7 @@ public class MagAnalizer {
 				if (altimg.getFile().getHref()
 						.indexOf("/" + folderUsage2 + "/") == -1) {
 					isError = true;
-					log.error("Nel file ["
+					log.error("\n"+"Nel file ["
 							+ file.getAbsolutePath()
 							+ "] nell'immagine numero ["
 							+ (x + 1)
@@ -300,7 +300,7 @@ public class MagAnalizer {
 				if (altimg.getFile().getHref()
 						.indexOf("/" + folderUsage3 + "/") == -1) {
 					isError = true;
-					log.error("Nel file ["
+					log.error("\n"+"Nel file ["
 							+ file.getAbsolutePath()
 							+ "] nell'immagine numero ["
 							+ (x + 1)
@@ -308,7 +308,7 @@ public class MagAnalizer {
 				}
 			} else {
 				isError = true;
-				log.error("Nel file ["
+				log.error("\n"+"Nel file ["
 						+ file.getAbsolutePath()
 						+ "] nell'immagine numero ["
 						+ (x + 1)
@@ -338,7 +338,7 @@ public class MagAnalizer {
 				}
 			} else {
 				isError = true;
-				log.error("Nel file ["
+				log.error("\n"+"Nel file ["
 						+ file.getAbsolutePath()
 						+ "] nell'immagine numero ["
 						+ (x + 1)
@@ -350,7 +350,7 @@ public class MagAnalizer {
 				if (altimg.getFile().getHref()
 						.indexOf("/" + folderUsage1 + "/") == -1) {
 					isError = true;
-					log.error("Nel file ["
+					log.error("\n"+"Nel file ["
 							+ file.getAbsolutePath()
 							+ "] nell'immagine numero ["
 							+ (x + 1)
@@ -360,7 +360,7 @@ public class MagAnalizer {
 				if (altimg.getFile().getHref()
 						.indexOf("/" + folderUsage2 + "/") == -1) {
 					isError = true;
-					log.error("Nel file ["
+					log.error("\n"+"Nel file ["
 							+ file.getAbsolutePath()
 							+ "] nell'immagine numero ["
 							+ (x + 1)
@@ -370,7 +370,7 @@ public class MagAnalizer {
 				if (altimg.getFile().getHref()
 						.indexOf("/" + folderUsage3 + "/") == -1) {
 					isError = true;
-					log.error("Nel file ["
+					log.error("\n"+"Nel file ["
 							+ file.getAbsolutePath()
 							+ "] nell'immagine numero ["
 							+ (x + 1)
@@ -378,7 +378,7 @@ public class MagAnalizer {
 				}
 			} else {
 				isError = true;
-				log.error("Nel file ["
+				log.error("\n"+"Nel file ["
 						+ file.getAbsolutePath()
 						+ "] nell'immagine numero ["
 						+ (x + 1)

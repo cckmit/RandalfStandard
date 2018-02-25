@@ -90,14 +90,14 @@ public class CalcImgMagCmd {
 		Metadigit mag = null;
 		
 		try {
-			System.out.println("Analizzo il file ["+f.getAbsolutePath()+"]");
+			log.debug("\nAnalizzo il file ["+f.getAbsolutePath()+"]");
 			magXsd = new MagXsd();
 			mag = magXsd.read(f);
 			if (mag.getImg()!= null && mag.getImg().size()>0){
 				for (int x=0; x<mag.getImg().size(); x++){
 					try {
 						if (((x+1)%100)==0){
-							System.out.println("Img. "+(x+1)+"/"+mag.getImg().size());
+							log.debug("\nImg. "+(x+1)+"/"+mag.getImg().size());
 						}
 						magXsd.calcImg(mag.getImg().get(x), f.getParentFile().getAbsolutePath());
 					} catch (XsdException e) {
@@ -105,7 +105,7 @@ public class CalcImgMagCmd {
 					}
 				}
 			}
-			System.out.println("Img. "+mag.getImg().size());
+			log.debug("\nImg. "+mag.getImg().size());
 			magXsd.write(mag, f);
 		} catch (XsdException e) {
 			log.error("["+f.getAbsolutePath()+"] "+e.getMessage(), e);

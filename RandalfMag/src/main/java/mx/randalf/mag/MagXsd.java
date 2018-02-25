@@ -81,8 +81,8 @@ public class MagXsd extends ReadXsd<Metadigit> {
 			parser = new Parser(fMag.getAbsolutePath(), errors, true);
 			if (errors.getNumErr() == 0) {
 				result = true;
-				md5Tools = new MD5();
-				md5 = md5Tools.getDigest(fMag);
+				md5Tools = new MD5(fMag);
+				md5 = md5Tools.getDigest();
 
 				fCert = new File(fMag.getAbsolutePath() + ".cert");
 				fw = new FileWriter(fCert);
@@ -90,7 +90,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 				bw.write(md5);
 			} else {
 				for (SAXParseException e : errors.getMsgErr()) {
-					log.error(e);
+					log.error(e.getMessage(), e);
 				}
 			}
 		} catch (SAXParseException e) {
@@ -256,8 +256,8 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		MD5 md5 = null;
 
 		try {
-			md5 = new MD5();
-			img.setMd5(md5.getDigest(fImg));
+			md5 = new MD5(fImg);
+			img.setMd5(md5.getDigest());
 			img.setFilesize(BigInteger.valueOf(fImg.length()));
 
 			if (img.getImageDimensions() == null){
@@ -315,8 +315,8 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		MD5 md5 = null;
 
 		try {
-			md5 = new MD5();
-			img.setMd5(md5.getDigest(fImg));
+			md5 = new MD5(fImg);
+			img.setMd5(md5.getDigest());
 			img.setFilesize(BigInteger.valueOf(fImg.length()));
 
 			if (img.getImageDimensions() == null){

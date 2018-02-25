@@ -62,8 +62,8 @@ public class MetsXsd extends ReadXsd<MetsType> {
 			parser = new Parser(fMag.getAbsolutePath(), errors, true);
 			if (errors.getNumErr() == 0) {
 				result = true;
-				md5Tools = new MD5();
-				md5 = md5Tools.getDigest(fMag);
+				md5Tools = new MD5(fMag);
+				md5 = md5Tools.getDigest();
 
 				fCert = new File(fMag.getAbsolutePath() + ".cert");
 				fw = new FileWriter(fCert);
@@ -71,7 +71,7 @@ public class MetsXsd extends ReadXsd<MetsType> {
 				bw.write(md5);
 			} else {
 				for (SAXParseException e : errors.getMsgErr()) {
-					log.error(e);
+					log.error(e.getMessage(), e);
 				}
 			}
 		} catch (SAXParseException e) {

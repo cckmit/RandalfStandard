@@ -8,6 +8,7 @@ import java.io.FileFilter;
 import java.math.BigInteger;
 import java.util.Arrays;
 
+import org.apache.log4j.Logger;
 import org.im4java.process.ProcessStarter;
 import org.niso.pdfs.datadict.Dimensions;
 import org.purl.dc.elements._1.SimpleLiteral;
@@ -28,6 +29,8 @@ import mx.randalf.xsd.exception.XsdException;
  *
  */
 public class GenMag2Cmd {
+
+	private static Logger log = Logger.getLogger(GenMag2Cmd.class);
 
 	/**
 	 * 
@@ -77,17 +80,17 @@ public class GenMag2Cmd {
 					isIntranet = true;
 				}
 				if (isArchivio || isInternet|| isIntranet){
-					System.out.println("Inizio elaborare il file: "+fileMag.getAbsolutePath());
+					log.info("\nInizio elaborare il file: "+fileMag.getAbsolutePath());
 					genMag(pathMag.getName(), isArchivio, isInternet, isIntranet, pathMag, fileMag);
-					System.out.println("Fine elaborare il file: "+fileMag.getAbsolutePath());
+					log.info("\nFine elaborare il file: "+fileMag.getAbsolutePath());
 				} else {
-					System.out.println("Mancano le cartelle delle immagini in ["+pathMag.getAbsolutePath()+"]");
+					log.error("\nMancano le cartelle delle immagini in ["+pathMag.getAbsolutePath()+"]");
 				}
 			} else {
-				System.out.println("Il file ["+fileMag.getAbsolutePath()+"] esiste");
+				log.info("\nIl file ["+fileMag.getAbsolutePath()+"] esiste");
 			}
 		} else {
-			System.out.println("La cartella ["+pathMag.getAbsolutePath()+"] non esiste");
+			log.error("\nLa cartella ["+pathMag.getAbsolutePath()+"] non esiste");
 		}
 	}
 
@@ -111,7 +114,7 @@ public class GenMag2Cmd {
 			for(File file : files){
 				sequenceNumber++;
 				if ((sequenceNumber%10)==0){
-					System.out.println("Elaboati: "+sequenceNumber+"/"+files.length);
+					log.info("\n"+"Elaboati: "+sequenceNumber+"/"+files.length);
 				}
 				img=null;
 				if (isArchivio){
