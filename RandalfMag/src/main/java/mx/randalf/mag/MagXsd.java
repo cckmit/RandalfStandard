@@ -59,8 +59,12 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		return write(obj, new MagNamespacePrefix(), null, null, schemaLocation);
 	}
 
-	@SuppressWarnings("unused")
 	public boolean write(Metadigit obj, File fMag) throws XsdException,
+			PubblicaException {
+		return write(obj, fMag, "cert");
+	}
+	@SuppressWarnings("unused")
+	public boolean write(Metadigit obj, File fMag, String extCert) throws XsdException,
 			PubblicaException {
 		ParserException errors = null;
 		Parser parser = null;
@@ -84,7 +88,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 				md5Tools = new MD5(fMag);
 				md5 = md5Tools.getDigest();
 
-				fCert = new File(fMag.getAbsolutePath() + ".cert");
+				fCert = new File(fMag.getAbsolutePath() + "."+extCert);
 				fw = new FileWriter(fCert);
 				bw = new BufferedWriter(fw);
 				bw.write(md5);
