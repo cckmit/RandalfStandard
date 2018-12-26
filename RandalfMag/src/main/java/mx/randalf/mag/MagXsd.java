@@ -61,10 +61,21 @@ public class MagXsd extends ReadXsd<Metadigit> {
 
 	public boolean write(Metadigit obj, File fMag) throws XsdException,
 			PubblicaException {
-		return write(obj, fMag, "cert");
+		return write(obj, fMag, "cert", true);
 	}
-	@SuppressWarnings("unused")
+
+	public boolean write(Metadigit obj, File fMag, boolean isParser) throws XsdException,
+			PubblicaException {
+		return write(obj, fMag, "cert", isParser);
+	}
+
 	public boolean write(Metadigit obj, File fMag, String extCert) throws XsdException,
+			PubblicaException {
+		return write(obj, fMag, extCert, true);
+	}
+
+	@SuppressWarnings("unused")
+	public boolean write(Metadigit obj, File fMag, String extCert, boolean isParser) throws XsdException,
 			PubblicaException {
 		ParserException errors = null;
 		Parser parser = null;
@@ -81,21 +92,25 @@ public class MagXsd extends ReadXsd<Metadigit> {
 			write(obj, fMag, new MagNamespacePrefix(), null, null,
 					schemaLocation);
 
-			errors = new ParserException();
-			parser = new Parser(fMag.getAbsolutePath(), errors, true);
-			if (errors.getNumErr() == 0) {
-				result = true;
-				md5Tools = new MD5(fMag);
-				md5 = md5Tools.getDigest();
-
-				fCert = new File(fMag.getAbsolutePath() + "."+extCert);
-				fw = new FileWriter(fCert);
-				bw = new BufferedWriter(fw);
-				bw.write(md5);
-			} else {
-				for (SAXParseException e : errors.getMsgErr()) {
-					log.error(e.getMessage(), e);
+			if (isParser) {
+				errors = new ParserException();
+				parser = new Parser(fMag.getAbsolutePath(), errors, true);
+				if (errors.getNumErr() == 0) {
+					result = true;
+					md5Tools = new MD5(fMag);
+					md5 = md5Tools.getDigest();
+	
+					fCert = new File(fMag.getAbsolutePath() + "."+extCert);
+					fw = new FileWriter(fCert);
+					bw = new BufferedWriter(fw);
+					bw.write(md5);
+				} else {
+					for (SAXParseException e : errors.getMsgErr()) {
+						log.error(e.getMessage(), e);
+					}
 				}
+			} else {
+				result = true;
 			}
 		} catch (SAXParseException e) {
 			log.error(e.getMessage(), e);
