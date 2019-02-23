@@ -6,4 +6,4 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://purl.org/dc/elements/1.1/")
-package org.purl.dc.elements._2;
+package org.purl.dc.elements._1;
