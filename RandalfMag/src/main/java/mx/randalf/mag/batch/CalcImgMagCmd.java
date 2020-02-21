@@ -105,6 +105,30 @@ public class CalcImgMagCmd {
 					}
 				}
 			}
+			if (mag.getOcr()!= null && mag.getOcr().size()>0){
+				for (int x=0; x<mag.getOcr().size(); x++){
+					try {
+						if (((x+1)%100)==0){
+							log.debug("\nOcr. "+(x+1)+"/"+mag.getOcr().size());
+						}
+						magXsd.calcOcr(mag.getOcr().get(x), f.getParentFile().getAbsolutePath());
+					} catch (XsdException e) {
+						log.error("["+f.getAbsolutePath()+" ocr "+(x+1)+"] "+e.getMessage(), e);
+					}
+				}
+			}
+			if (mag.getDoc()!= null && mag.getDoc().size()>0){
+				for (int x=0; x<mag.getDoc().size(); x++){
+					try {
+						if (((x+1)%100)==0){
+							log.debug("\nDoc. "+(x+1)+"/"+mag.getDoc().size());
+						}
+						magXsd.calcDoc(mag.getDoc().get(x), f.getParentFile().getAbsolutePath());
+					} catch (XsdException e) {
+						log.error("["+f.getAbsolutePath()+" doc "+(x+1)+"] "+e.getMessage(), e);
+					}
+				}
+			}
 			log.debug("\nImg. "+mag.getImg().size());
 			magXsd.write(mag, f);
 		} catch (XsdException e) {

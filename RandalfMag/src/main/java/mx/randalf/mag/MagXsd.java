@@ -9,10 +9,16 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.security.NoSuchAlgorithmException;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.log4j.Logger;
 import org.im4java.core.InfoException;
@@ -34,9 +40,11 @@ import mx.randalf.parser.Parser;
 import mx.randalf.parser.exception.ParserException;
 import mx.randalf.xsd.ReadXsd;
 import mx.randalf.xsd.exception.XsdException;
+import it.sbn.iccu.metaag1.Doc;
 import it.sbn.iccu.metaag1.Img;
 import it.sbn.iccu.metaag1.Img.Altimg;
 import it.sbn.iccu.metaag1.Metadigit;
+import it.sbn.iccu.metaag1.Ocr;
 
 /**
  * @author massi
@@ -86,8 +94,18 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		FileWriter fw = null;
 		BufferedWriter bw = null;
 		boolean result = false;
+		GregorianCalendar gc = null;
+		XMLGregorianCalendar xgc = null;
 
 		try {
+			if (obj.getGen() != null) {
+				gc = new GregorianCalendar();
+				xgc = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+				if (obj.getGen().getCreation()==null) {
+					obj.getGen().setCreation(xgc);
+				}
+				obj.getGen().setLastUpdate(xgc);
+			}
 			schemaLocation = "http://www.iccu.sbn.it/metaAG1.pdf http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
 			write(obj, fMag, new MagNamespacePrefix(), null, null,
 					schemaLocation);
@@ -97,13 +115,16 @@ public class MagXsd extends ReadXsd<Metadigit> {
 				parser = new Parser(fMag.getAbsolutePath(), errors, true);
 				if (errors.getNumErr() == 0) {
 					result = true;
-					md5Tools = new MD5(fMag);
-					md5 = md5Tools.getDigest();
 	
-					fCert = new File(fMag.getAbsolutePath() + "."+extCert);
-					fw = new FileWriter(fCert);
-					bw = new BufferedWriter(fw);
-					bw.write(md5);
+					if ( extCert != null) {
+						md5Tools = new MD5(fMag);
+						md5 = md5Tools.getDigest();
+
+						fCert = new File(fMag.getAbsolutePath() + "."+extCert);
+						fw = new FileWriter(fCert);
+						bw = new BufferedWriter(fw);
+						bw.write(md5);
+					}
 				} else {
 					for (SAXParseException e : errors.getMsgErr()) {
 						log.error(e.getMessage(), e);
@@ -124,6 +145,9 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		} catch (PubblicaException e) {
 			throw e;
 		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			throw new XsdException(e.getMessage(), e);
+		} catch (DatatypeConfigurationException e) {
 			log.error(e.getMessage(), e);
 			throw new XsdException(e.getMessage(), e);
 		} finally {
@@ -499,5 +523,70 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		}
 		simpleLiteral.getContent().add(value);
 		return simpleLiteral;
+	}
+
+	public void calcOcr(Ocr ocr, String pathMag) throws XsdException {
+		File fOcr= null;
+		MD5 md5 = null;
+		BasicFileAttributes attrs;
+		FileTime time ;
+		GregorianCalendar gc = null;
+		
+		try {
+			fOcr = new File(pathMag+File.separator+ocr.getFile().getHref());
+			
+			md5 = new MD5(fOcr);
+			ocr.setMd5(md5.getDigest());
+			ocr.setFilesize(BigInteger.valueOf(fOcr.length()));
+			
+			attrs = Files.readAttributes(fOcr.toPath(), BasicFileAttributes.class);
+			time = attrs.creationTime();
+			
+			gc = new GregorianCalendar();
+			gc.setTimeInMillis(time.toMillis());
+			
+			
+			ocr.setDatetimecreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+		} catch (NoSuchAlgorithmException e) {
+			throw new XsdException(e.getMessage(), e);
+		} catch (FileNotFoundException e) {
+			throw new XsdException(e.getMessage(), e);
+		} catch (IOException e) {
+			throw new XsdException(e.getMessage(), e);
+		} catch (DatatypeConfigurationException e) {
+			throw new XsdException(e.getMessage(), e);
+		}
+	}
+
+	public void calcDoc(Doc doc, String pathMag) throws XsdException {
+		File fDoc= null;
+		MD5 md5 = null;
+		BasicFileAttributes attrs;
+		FileTime time ;
+		GregorianCalendar gc = null;
+		
+		try {
+			fDoc = new File(pathMag+File.separator+doc.getFile().getHref());
+			
+			md5 = new MD5(fDoc);
+			doc.setMd5(md5.getDigest());
+			doc.setFilesize(BigInteger.valueOf(fDoc.length()));
+			
+			attrs = Files.readAttributes(fDoc.toPath(), BasicFileAttributes.class);
+			time = attrs.creationTime();
+			
+			gc = new GregorianCalendar();
+			gc.setTimeInMillis(time.toMillis());
+			
+			doc.setDatetimecreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+		} catch (NoSuchAlgorithmException e) {
+			throw new XsdException(e.getMessage(), e);
+		} catch (FileNotFoundException e) {
+			throw new XsdException(e.getMessage(), e);
+		} catch (IOException e) {
+			throw new XsdException(e.getMessage(), e);
+		} catch (DatatypeConfigurationException e) {
+			throw new XsdException(e.getMessage(), e);
+		}
 	}
 }
