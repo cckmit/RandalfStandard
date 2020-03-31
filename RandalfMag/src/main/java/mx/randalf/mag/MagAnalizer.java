@@ -11,10 +11,12 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Hashtable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import mx.randalf.interfacException.exception.PubblicaException;
 import mx.randalf.xsd.exception.XsdException;
 
-import org.apache.log4j.Logger;
 
 /**
  * Questa classe viene utilizzata come tools per l'analisi dei mag con i
@@ -25,7 +27,7 @@ import org.apache.log4j.Logger;
  */
 public class MagAnalizer {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LogManager.getLogger(getClass());
 
 	private String folderScan;
 

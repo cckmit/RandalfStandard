@@ -8,7 +8,8 @@ import java.io.FileFilter;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.im4java.process.ProcessStarter;
 import org.niso.pdfs.datadict.Dimensions;
 import org.purl.dc.elements._1.SimpleLiteral;
@@ -30,7 +31,7 @@ import mx.randalf.xsd.exception.XsdException;
  */
 public class GenMag2Cmd {
 
-	private static Logger log = Logger.getLogger(GenMag2Cmd.class);
+	private static Logger log = LogManager.getLogger(GenMag2Cmd.class);
 
 	/**
 	 * 

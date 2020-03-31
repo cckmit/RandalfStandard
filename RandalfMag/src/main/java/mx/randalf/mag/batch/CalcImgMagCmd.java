@@ -8,7 +8,8 @@ import it.sbn.iccu.metaag1.Metadigit;
 import java.io.File;
 import java.io.FileFilter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.im4java.process.ProcessStarter;
 
 import mx.randalf.interfacException.exception.PubblicaException;
@@ -21,7 +22,7 @@ import mx.randalf.xsd.exception.XsdException;
  */
 public class CalcImgMagCmd {
 
-	private Logger log = Logger.getLogger(CalcImgMagCmd.class);
+	private Logger log = LogManager.getLogger(CalcImgMagCmd.class);
 
 	/**
 	 * 
@@ -55,32 +56,44 @@ public class CalcImgMagCmd {
 
 	public void scanFolder(File f){
 		File[] fl = null;
+		File fCert = null;
 		
-		fl = f.listFiles(new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				boolean result = false;
-				File fCert = null;
-				
-				if (pathname.isDirectory()){
-					result = true;
-				} else if (pathname.getName().endsWith(".xml") &&
-						!pathname.getName().startsWith(".")){
-					fCert = new File(pathname.getAbsolutePath()+".cert");
-					if (!fCert.exists()){
-						result = true;
-					}
-				}
-				return result;
-			}
-		});
-		
-		for ( int x=0; x<fl.length; x++){
-			if (fl[x].isDirectory()){
-				scanFolder(fl[x]);
+		if (f.isFile() && f.getName().endsWith(".xml") &&
+				!f.getName().startsWith(".")) {
+			fCert = new File(f.getAbsolutePath()+".cert");
+			if (!fCert.exists()){
+				calcImg(f);
 			} else {
-				calcImg(fl[x]);
+				System.out.println("Il file ["+f.getAbsolutePath()+"] risulta già elaborato");
+			}
+
+		} else {
+			fl = f.listFiles(new FileFilter() {
+				
+				@Override
+				public boolean accept(File pathname) {
+					boolean result = false;
+					File fCert = null;
+					
+					if (pathname.isDirectory()){
+						result = true;
+					} else if (pathname.getName().endsWith(".xml") &&
+							!pathname.getName().startsWith(".")){
+						fCert = new File(pathname.getAbsolutePath()+".cert");
+						if (!fCert.exists()){
+							result = true;
+						}
+					}
+					return result;
+				}
+			});
+			
+			for ( int x=0; x<fl.length; x++){
+				if (fl[x].isDirectory()){
+					scanFolder(fl[x]);
+				} else {
+					calcImg(fl[x]);
+				}
 			}
 		}
 	}

@@ -31,7 +31,8 @@ import mx.randalf.mag.ocr.exception.GenOcrException;
 import mx.randalf.xsd.exception.XsdException;
 import net.sourceforge.tess4j.TesseractException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.niso.pdfs.datadict.DocCompressiontypeNiso;
 import org.niso.pdfs.datadict.DocFormat;
 import org.niso.pdfs.datadict.DocMimetypeNiso;
@@ -45,7 +46,7 @@ import org.niso.pdfs.datadict.DocMimetypeNiso;
  */
 public class GenOcr {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LogManager.getLogger(getClass());
 
 	/**
 	 * Variabile utilizzata per indicare la cartella da analizzare che contiene
