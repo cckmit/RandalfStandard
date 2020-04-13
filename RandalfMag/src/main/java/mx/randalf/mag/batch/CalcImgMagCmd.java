@@ -143,7 +143,7 @@ public class CalcImgMagCmd {
 				}
 			}
 			log.debug("\nImg. "+mag.getImg().size());
-			magXsd.write(mag, f);
+			magXsd.write(mag, f, true);
 		} catch (XsdException e) {
 			log.error("["+f.getAbsolutePath()+"] "+e.getMessage(), e);
 		} catch (PubblicaException e) {

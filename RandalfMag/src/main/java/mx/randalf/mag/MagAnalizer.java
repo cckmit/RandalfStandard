@@ -208,7 +208,7 @@ public class MagAnalizer {
 					}
 				}
 				if (!isError) {
-					magXsd.write(mag, file);
+					magXsd.write(mag, file, true);
 				}
 			} else {
 				if (isCheckIdentifierDuplicate()) {

@@ -126,7 +126,7 @@ public class GenMagCert {
 				}
 				magXsd.calcImg(img, fMag.getParentFile().getAbsolutePath(), usages);
 			}
-			if (magXsd.write(mag, fMag)) {
+			if (magXsd.write(mag, fMag, true)) {
 				fElabOK = new File(fMag.getAbsolutePath()+".elabOK");
 				if (fElabOK.exists()) {
 					if (!fElabOK.delete()) {

@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -30,10 +31,12 @@ import mx.randalf.digital.img.reader.CalcImg;
 
 import org.niso.pdfs.datadict.CompressiontypeNiso;
 import org.niso.pdfs.datadict.Format;
+import org.niso.pdfs.datadict.ImageCreation;
 import org.niso.pdfs.datadict.ImgMimetype;
 import org.niso.pdfs.datadict.Photometricinterpretationtype;
 import org.niso.pdfs.datadict.Dimensions;
 import org.niso.pdfs.datadict.Spatialmetrics;
+import org.niso.pdfs.datadict.ImageCreation.Scanningsystem;
 import org.purl.dc.elements._1.SimpleLiteral;
 
 import mx.randalf.interfacException.exception.PubblicaException;
@@ -42,8 +45,10 @@ import mx.randalf.parser.exception.ParserException;
 import mx.randalf.xsd.ReadXsd;
 import mx.randalf.xsd.exception.XsdException;
 import it.sbn.iccu.metaag1.Doc;
+import it.sbn.iccu.metaag1.Gen;
 import it.sbn.iccu.metaag1.Img;
 import it.sbn.iccu.metaag1.Img.Altimg;
+import it.sbn.iccu.metaag1.ImgGroup;
 import it.sbn.iccu.metaag1.Metadigit;
 import it.sbn.iccu.metaag1.Ocr;
 
@@ -61,30 +66,30 @@ public class MagXsd extends ReadXsd<Metadigit> {
 	public MagXsd() {
 	}
 
-	public String write(Metadigit obj) throws XsdException {
+	public String write(Metadigit obj, Boolean jaxbFormattedOutput) throws XsdException {
 		String schemaLocation = null;
 
 		schemaLocation = "http://www.iccu.sbn.it/metaAG1.pdf http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
-		return write(obj, new MagNamespacePrefix(), null, null, schemaLocation);
+		return write(obj, new MagNamespacePrefix(), null, null, schemaLocation, jaxbFormattedOutput);
 	}
 
-	public boolean write(Metadigit obj, File fMag) throws XsdException,
+	public boolean write(Metadigit obj, File fMag, Boolean jaxbFormattedOutput) throws XsdException,
 			PubblicaException {
-		return write(obj, fMag, "cert", true);
+		return write(obj, fMag, "cert", true, jaxbFormattedOutput);
 	}
 
-	public boolean write(Metadigit obj, File fMag, boolean isParser) throws XsdException,
+	public boolean write(Metadigit obj, File fMag, boolean isParser, Boolean jaxbFormattedOutput) throws XsdException,
 			PubblicaException {
-		return write(obj, fMag, "cert", isParser);
+		return write(obj, fMag, "cert", isParser, jaxbFormattedOutput);
 	}
 
-	public boolean write(Metadigit obj, File fMag, String extCert) throws XsdException,
+	public boolean write(Metadigit obj, File fMag, String extCert, Boolean jaxbFormattedOutput) throws XsdException,
 			PubblicaException {
-		return write(obj, fMag, extCert, true);
+		return write(obj, fMag, extCert, true, jaxbFormattedOutput);
 	}
 
 	@SuppressWarnings("unused")
-	public boolean write(Metadigit obj, File fMag, String extCert, boolean isParser) throws XsdException,
+	public boolean write(Metadigit obj, File fMag, String extCert, boolean isParser, Boolean jaxbFormattedOutput) throws XsdException,
 			PubblicaException {
 		ParserException errors = null;
 		Parser parser = null;
@@ -109,7 +114,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 			}
 			schemaLocation = "http://www.iccu.sbn.it/metaAG1.pdf http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
 			write(obj, fMag, new MagNamespacePrefix(), null, null,
-					schemaLocation);
+					schemaLocation, jaxbFormattedOutput);
 
 			if (isParser) {
 				errors = new ParserException();
@@ -168,35 +173,63 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		return result;
 	}
 
-	public void calcImg(Img img, boolean basic, String pathMag) throws XsdException{
-		calcImg(img, basic, pathMag, true, null);
+	public void calcImg(Img img, boolean basic, String pathMag, Gen gen) throws XsdException{
+		calcImg(img, basic, pathMag, true, null,  gen);
 	}
 
 	public void calcImg(Img img, String pathMag) throws XsdException{
-		calcImg(img, pathMag, true, null);
+		calcImg(img, pathMag, true, null,  null);
+	}
+
+	public void calcImg(Img img, String pathMag, Gen gen) throws XsdException{
+		calcImg(img, pathMag, true, null,  gen);
 	}
 
 	public void calcImg(Img img, boolean basic, String pathMag, boolean anaAltImg) throws XsdException{
-		calcImg(img, basic, pathMag, anaAltImg, null);
+		calcImg(img, basic, pathMag, anaAltImg, null,  null);
+	}
+
+	public void calcImg(Img img, boolean basic, String pathMag, boolean anaAltImg, Gen gen) throws XsdException{
+		calcImg(img, basic, pathMag, anaAltImg, null,  gen);
 	}
 
 	public void calcImg(Img img, String pathMag, boolean anaAltImg) throws XsdException{
-		calcImg(img, pathMag, anaAltImg, null);
+		calcImg(img, pathMag, anaAltImg, null,  null);
+	}
+
+	public void calcImg(Img img, String pathMag, boolean anaAltImg, Gen gen) throws XsdException{
+		calcImg(img, pathMag, anaAltImg, null,  gen);
 	}
 
 	public void calcImg(Img img, boolean basic, String pathMag, String[] usages) throws XsdException{
-		calcImg(img, basic, pathMag, true, usages);
+		calcImg(img, basic, pathMag, true, usages, null);
+	}
+
+	public void calcImg(Img img, boolean basic, String pathMag, String[] usages, Gen gen) throws XsdException{
+		calcImg(img, basic, pathMag, true, usages, gen);
 	}
 
 	public void calcImg(Img img, String pathMag, String[] usages) throws XsdException{
-		calcImg(img, pathMag, true, usages);
+		calcImg(img, pathMag, true, usages, null);
+	}
+
+	public void calcImg(Img img, String pathMag, String[] usages, Gen gen) throws XsdException{
+		calcImg(img, pathMag, true, usages, gen);
 	}
 
 	public void calcImg(Img img, String pathMag, boolean anaAltImg, String[] usages) throws XsdException{
-		calcImg(img, false, pathMag, anaAltImg, usages);
+		calcImg(img, false, pathMag, anaAltImg, usages, null);
+	}
+
+	public void calcImg(Img img, String pathMag, boolean anaAltImg, String[] usages, Gen gen) throws XsdException{
+		calcImg(img, false, pathMag, anaAltImg, usages, gen);
 	}
 
 	public void calcImg(Img img, boolean basic, String pathMag, boolean anaAltImg, String[] usages) throws XsdException{
+		calcImg(img, basic, pathMag, anaAltImg, usages, null);
+	}
+
+	public void calcImg(Img img, boolean basic, String pathMag, boolean anaAltImg, String[] usages, Gen gen) throws XsdException{
 		CalcImg calcImg = null;
 		File fImg = null;
 		
@@ -208,7 +241,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 						fImg = new File (pathMag+File.separator+img.getFile().getHref().replace("./", ""));
 						if (fImg.exists()){
 							calcImg = new CalcImg(fImg,basic);
-							readImg(img, calcImg, fImg);
+							readImg(img, calcImg, fImg, gen);
 						} else {
 							throw new XsdException("Il file ["+fImg.getAbsolutePath()+"] non è presente");
 						}
@@ -226,7 +259,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 									fImg = new File (pathMag+File.separator+img.getAltimg().get(x).getFile().getHref());
 									if (fImg.exists()){
 										calcImg = new CalcImg(fImg);
-										readImg(img.getAltimg().get(x), calcImg, fImg);
+										readImg(img.getAltimg().get(x), calcImg, fImg, gen);
 									} else {
 										throw new XsdException("Il file ["+fImg.getAbsolutePath()+"] non è presente");
 									}
@@ -292,7 +325,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 	 * @param img
 	 *            Oggetto img
 	 */
-	private void readImg(Img img, CalcImg calcImg, File fImg) throws DatatypeConfigurationException,
+	private void readImg(Img img, CalcImg calcImg, File fImg, Gen gen) throws DatatypeConfigurationException,
 			InfoException, Exception {
 		Dimensions imageDimensions = null;
 		Spatialmetrics imageMetrics = null;
@@ -300,6 +333,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		MD5 md5 = null;
 
 		try {
+
 			md5 = new MD5(fImg);
 			img.setMd5(md5.getDigest());
 			img.setFilesize(BigInteger.valueOf(fImg.length()));
@@ -313,21 +347,28 @@ public class MagXsd extends ReadXsd<Metadigit> {
 
 			img.setDatetimecreated(calcImg.getDateTimeCreate());
 
-			if (img.getImageMetrics() == null){
-				imageMetrics = new Spatialmetrics();
+			if (gen != null) {				
+				img.setImggroupID(getImggroupID(img, calcImg, gen));
+				img.setScanning(null);
 			} else {
-				imageMetrics = img.getImageMetrics();
-			}
-			img.setImageMetrics(setImageMetrics(imageMetrics, calcImg));
 
-			img.setPpi(calcImg.getDpi());
+				if (img.getImageMetrics() == null){
+					imageMetrics = new Spatialmetrics();
+				} else {
+					imageMetrics = img.getImageMetrics();
+				}
+				img.setImageMetrics(setImageMetrics(imageMetrics, calcImg));
 
-			if (img.getFormat() == null){
-				format = new Format();
-			} else {
-				format = img.getFormat();
+				img.setPpi(calcImg.getDpi());
+
+				if (img.getFormat() == null){
+					format = new Format();
+				} else {
+					format = img.getFormat();
+				}
+				img.setFormat(setFormat(format, calcImg));
 			}
-			img.setFormat(setFormat(format, calcImg));
+
 			//
 			// if (this.imgGroup)
 			// checkImgGroup(img);
@@ -341,6 +382,123 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		}
 	}
 
+	private String getImggroupID(Img img, CalcImg calcImg, Gen gen) throws InfoException {
+		String id = null;
+		DecimalFormat df4 = new DecimalFormat("0000");
+		if (gen.getImgGroup()==null || gen.getImgGroup().size()==0) {
+			id = "IMG-GRP_"+df4.format(1);
+			gen.getImgGroup().add(addImgGroup(img.getScanning(), calcImg, id));
+		} else {
+			for (int x=0; x<gen.getImgGroup().size(); x++) {
+				if (testImgGroup(gen.getImgGroup().get(x), calcImg, img.getScanning())) {
+					id = gen.getImgGroup().get(x).getID();
+					break;
+				}
+			}
+			if (id == null) {
+				id = "IMG-GRP_"+df4.format(gen.getImgGroup().size()+1);
+				gen.getImgGroup().add(addImgGroup(img.getScanning(), calcImg, id));
+			}
+		}
+		return id;
+	}
+
+	private boolean testImgGroup(ImgGroup imgGroup, CalcImg calcImg, ImageCreation scanning) throws InfoException {
+		
+		if (testImgGroup(imgGroup.getImageMetrics(), calcImg) &&
+				imgGroup.getPpi().intValue()==calcImg.getDpi().intValue() &&
+						testImgGroup(imgGroup.getFormat(), calcImg) &&
+						testImgGroup(imgGroup.getScanning(), scanning)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean testImgGroup(ImageCreation scanning, ImageCreation imageCreation) {
+
+		if (((scanning == null && imageCreation== null) || 
+				(scanning != null && imageCreation!= null)) && (
+		scanning.getDevicesource().equals(imageCreation.getDevicesource()) &&
+				scanning.getScanningagency().equals(imageCreation.getScanningagency()) &&
+				testImgGroup(scanning.getScanningsystem(), imageCreation.getScanningsystem()))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean testImgGroup(Scanningsystem scanningsystem, Scanningsystem origin) {
+		
+		if (scanningsystem.getCaptureSoftware().equals(origin.getCaptureSoftware()) &&
+				scanningsystem.getScannerManufacturer().equals(origin.getScannerManufacturer()) &&
+				scanningsystem.getScannerModel().equals(origin.getScannerModel())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean testImgGroup(Format format, CalcImg calcImg) {
+		if (format.getMime().value().equals(getMimeType(calcImg).value()) &&
+				format.getCompression().value().equals(getCompressionDesc(calcImg).value()) &&
+				format.getName().equals(calcImg.getMimeName())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean testImgGroup(Spatialmetrics imageMetrics, CalcImg calcImg) throws InfoException {
+		
+		if ((
+				(calcImg.getFreqUnit()==null && 
+					imageMetrics.getSamplingfrequencyunit() ==null) ||
+				(calcImg.getFreqUnit()!=null && 
+					imageMetrics.getSamplingfrequencyunit().intValue()==calcImg.getFreqUnit().intValue())
+				) &&
+			(
+				(calcImg.getFreqPlan()==null && 
+					imageMetrics.getSamplingfrequencyplane() ==null) ||
+				(calcImg.getFreqPlan()!=null && 
+					imageMetrics.getSamplingfrequencyplane().intValue()==calcImg.getFreqPlan().intValue())
+				) &&
+			imageMetrics.getXsamplingfrequency().intValue()==calcImg.getDpi().intValue() &&
+			imageMetrics.getYsamplingfrequency().intValue()==calcImg.getDpi().intValue() &&
+			imageMetrics.getPhotometricinterpretation().value().equals(getPhotoInterValue(calcImg).value()) &&
+			imageMetrics.getBitpersample().equals(calcImg.getBitPerSampleValue())){
+			return true;
+		} else {
+			return false;
+		}
+			
+	}
+
+	private ImgGroup addImgGroup(ImageCreation scanning, CalcImg calcImg, String id) throws InfoException {
+		ImgGroup imgGroup = null;
+		Spatialmetrics imageMetrics = null;
+		Format format = null;
+
+		try {
+			imgGroup = new ImgGroup();
+			imgGroup.setID(id);
+
+			imageMetrics = new Spatialmetrics();
+			imgGroup.setImageMetrics(setImageMetrics(imageMetrics, calcImg));
+
+			imgGroup.setPpi(calcImg.getDpi());
+
+			format = new Format();
+			imgGroup.setFormat(setFormat(format, calcImg));
+			if (scanning!= null) {
+				imgGroup.setScanning(scanning);
+			}
+		} catch (InfoException e) {
+			throw e;
+		}
+		return imgGroup;
+	}
+
 	/**
 	 * Questo metodo viene utilizzato per leggere le informazioni relative alle
 	 * imamgini
@@ -351,7 +509,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 	 * @throws InfoException
 	 *             , Exception
 	 */
-	private void readImg(Altimg img, CalcImg calcImg, File fImg) throws DatatypeConfigurationException,
+	private void readImg(Altimg img, CalcImg calcImg, File fImg, Gen gen) throws DatatypeConfigurationException,
 			InfoException, Exception {
 		Dimensions imageDimensions = null;
 		Spatialmetrics imageMetrics = null;
@@ -372,21 +530,29 @@ public class MagXsd extends ReadXsd<Metadigit> {
 
 			img.setDatetimecreated(calcImg.getDateTimeCreate());
 
-			if (img.getImageMetrics() == null){
-				imageMetrics = new Spatialmetrics();
+			if (gen != null) {				
+				img.setImggroupID(getImggroupID(img, calcImg, gen));
+				img.setScanning(null);
 			} else {
-				imageMetrics = img.getImageMetrics();
-			}
-			img.setImageMetrics(setImageMetrics(imageMetrics, calcImg));
 
-			img.setPpi(calcImg.getDpi());
+				if (img.getImageMetrics() == null){
+					imageMetrics = new Spatialmetrics();
+				} else {
+					imageMetrics = img.getImageMetrics();
+				}
+				img.setImageMetrics(setImageMetrics(imageMetrics, calcImg));
 
-			if (img.getFormat() == null){
-				format = new Format();
-			} else {
-				format = img.getFormat();
+				img.setPpi(calcImg.getDpi());
+
+				if (img.getFormat() == null){
+					format = new Format();
+				} else {
+					format = img.getFormat();
+				}
+				img.setFormat(setFormat(format, calcImg));
 			}
-			img.setFormat(setFormat(format, calcImg));
+			
+			
 			//
 			// if (this.imgGroup)
 			// checkImgGroup(img);
@@ -398,6 +564,27 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	private Object getImggroupID(Altimg img, CalcImg calcImg, Gen gen) throws InfoException {
+		String id = null;
+		DecimalFormat df4 = new DecimalFormat("0000");
+		if (gen.getImgGroup()==null || gen.getImgGroup().size()==0) {
+			id = "IMG-GRP_"+df4.format(1);
+			gen.getImgGroup().add(addImgGroup(null, calcImg, id));
+		} else {
+			for (int x=0; x<gen.getImgGroup().size(); x++) {
+				if (testImgGroup(gen.getImgGroup().get(x), calcImg, null)) {
+					id = gen.getImgGroup().get(x).getID();
+					break;
+				}
+			}
+			if (id == null) {
+				id = "IMG-GRP_"+df4.format(gen.getImgGroup().size()+1);
+				gen.getImgGroup().add(addImgGroup(null, calcImg, id));
+			}
+		}
+		return id;
 	}
 
 	private Dimensions setImageDimensions(Dimensions imageDimensions, CalcImg calcImg) throws InfoException{

@@ -261,7 +261,7 @@ public class GenOcr {
 							}
 						}
 
-						if (magXsd.write(mag, fMag)) {
+						if (magXsd.write(mag, fMag, true)) {
 							genFileCertOcr(fMag);
 						}
 
