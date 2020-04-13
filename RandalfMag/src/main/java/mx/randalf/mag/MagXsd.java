@@ -418,10 +418,15 @@ public class MagXsd extends ReadXsd<Metadigit> {
 	private boolean testImgGroup(ImageCreation scanning, ImageCreation imageCreation) {
 
 		if (((scanning == null && imageCreation== null) || 
-				(scanning != null && imageCreation!= null)) && (
-		scanning.getDevicesource().equals(imageCreation.getDevicesource()) &&
-				scanning.getScanningagency().equals(imageCreation.getScanningagency()) &&
-				testImgGroup(scanning.getScanningsystem(), imageCreation.getScanningsystem()))) {
+				(
+					(scanning != null && imageCreation!= null) && 
+					(scanning.getDevicesource().equals(imageCreation.getDevicesource()) &&
+					 scanning.getScanningagency().equals(imageCreation.getScanningagency()) &&
+					 testImgGroup(scanning.getScanningsystem(), imageCreation.getScanningsystem())
+					)
+				)
+			)
+		   ) {
 			return true;
 		} else {
 			return false;
