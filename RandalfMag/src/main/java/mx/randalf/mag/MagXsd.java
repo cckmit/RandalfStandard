@@ -382,25 +382,28 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		}
 	}
 
-	private String getImggroupID(Img img, CalcImg calcImg, Gen gen) throws InfoException {
+	private ImgGroup getImggroupID(Img img, CalcImg calcImg, Gen gen) throws InfoException {
 		String id = null;
+		ImgGroup result = null;
 		DecimalFormat df4 = new DecimalFormat("0000");
 		if (gen.getImgGroup()==null || gen.getImgGroup().size()==0) {
 			id = "IMG-GRP_"+df4.format(1);
-			gen.getImgGroup().add(addImgGroup(img.getScanning(), calcImg, id));
+			result = addImgGroup(img.getScanning(), calcImg, id);
+			gen.getImgGroup().add(result);
 		} else {
 			for (int x=0; x<gen.getImgGroup().size(); x++) {
 				if (testImgGroup(gen.getImgGroup().get(x), calcImg, img.getScanning())) {
-					id = gen.getImgGroup().get(x).getID();
+					result = gen.getImgGroup().get(x);
 					break;
 				}
 			}
 			if (id == null) {
 				id = "IMG-GRP_"+df4.format(gen.getImgGroup().size()+1);
-				gen.getImgGroup().add(addImgGroup(img.getScanning(), calcImg, id));
+				result = addImgGroup(img.getScanning(), calcImg, id);
+				gen.getImgGroup().add(result);
 			}
 		}
-		return id;
+		return result;
 	}
 
 	private boolean testImgGroup(ImgGroup imgGroup, CalcImg calcImg, ImageCreation scanning) throws InfoException {
@@ -571,25 +574,28 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		}
 	}
 
-	private Object getImggroupID(Altimg img, CalcImg calcImg, Gen gen) throws InfoException {
+	private ImgGroup getImggroupID(Altimg img, CalcImg calcImg, Gen gen) throws InfoException {
 		String id = null;
+		ImgGroup result = null;
 		DecimalFormat df4 = new DecimalFormat("0000");
 		if (gen.getImgGroup()==null || gen.getImgGroup().size()==0) {
 			id = "IMG-GRP_"+df4.format(1);
-			gen.getImgGroup().add(addImgGroup(null, calcImg, id));
+			result = addImgGroup(null, calcImg, id);
+			gen.getImgGroup().add(result);
 		} else {
 			for (int x=0; x<gen.getImgGroup().size(); x++) {
 				if (testImgGroup(gen.getImgGroup().get(x), calcImg, null)) {
-					id = gen.getImgGroup().get(x).getID();
+					result = gen.getImgGroup().get(x);
 					break;
 				}
 			}
 			if (id == null) {
 				id = "IMG-GRP_"+df4.format(gen.getImgGroup().size()+1);
-				gen.getImgGroup().add(addImgGroup(null, calcImg, id));
+				result = addImgGroup(null, calcImg, id);
+				gen.getImgGroup().add(result);
 			}
 		}
-		return id;
+		return result;
 	}
 
 	private Dimensions setImageDimensions(Dimensions imageDimensions, CalcImg calcImg) throws InfoException{

@@ -25,6 +25,8 @@ import org.niso.pdfs.datadict.ImageCreation;
 import org.niso.pdfs.datadict.Spatialmetrics;
 import org.niso.pdfs.datadict.Targetdata;
 
+import it.sbn.iccu.metaag1.Bib.Holdings;
+
 
 /**
  * <p>Java class for img complex type.
@@ -140,11 +142,11 @@ public class Img {
     @XmlAttribute(name = "imggroupID")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
-    protected String imggroupID;
+    protected ImgGroup imggroupID;
     @XmlAttribute(name = "holdingsID")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
-    protected Object holdingsID;
+    protected Holdings holdingsID;
 
     /**
      * Gets the value of the sequenceNumber property.
@@ -601,7 +603,7 @@ public class Img {
      *     {@link Object }
      *     
      */
-    public String getImggroupID() {
+    public ImgGroup getImggroupID() {
         return imggroupID;
     }
 
@@ -613,7 +615,7 @@ public class Img {
      *     {@link Object }
      *     
      */
-    public void setImggroupID(String value) {
+    public void setImggroupID(ImgGroup value) {
         this.imggroupID = value;
     }
 
@@ -625,7 +627,7 @@ public class Img {
      *     {@link Object }
      *     
      */
-    public Object getHoldingsID() {
+    public Holdings getHoldingsID() {
         return holdingsID;
     }
 
@@ -637,7 +639,7 @@ public class Img {
      *     {@link Object }
      *     
      */
-    public void setHoldingsID(Object value) {
+    public void setHoldingsID(Holdings value) {
         this.holdingsID = value;
     }
 
@@ -710,7 +712,7 @@ public class Img {
         @XmlAttribute(name = "imggroupID")
         @XmlIDREF
         @XmlSchemaType(name = "IDREF")
-        protected Object imggroupID;
+        protected ImgGroup imggroupID;
 
         /**
          * Gets the value of the usage property.
@@ -989,7 +991,7 @@ public class Img {
          *     {@link Object }
          *     
          */
-        public Object getImggroupID() {
+        public ImgGroup getImggroupID() {
             return imggroupID;
         }
 
@@ -1001,7 +1003,7 @@ public class Img {
          *     {@link Object }
          *     
          */
-        public void setImggroupID(Object value) {
+        public void setImggroupID(ImgGroup value) {
             this.imggroupID = value;
         }
 
