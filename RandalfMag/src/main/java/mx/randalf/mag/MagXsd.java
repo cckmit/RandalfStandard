@@ -397,7 +397,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 					break;
 				}
 			}
-			if (id == null) {
+			if (result == null) {
 				id = "IMG-GRP_"+df4.format(gen.getImgGroup().size()+1);
 				result = addImgGroup(img.getScanning(), calcImg, id);
 				gen.getImgGroup().add(result);
@@ -589,7 +589,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 					break;
 				}
 			}
-			if (id == null) {
+			if (result == null) {
 				id = "IMG-GRP_"+df4.format(gen.getImgGroup().size()+1);
 				result = addImgGroup(null, calcImg, id);
 				gen.getImgGroup().add(result);
