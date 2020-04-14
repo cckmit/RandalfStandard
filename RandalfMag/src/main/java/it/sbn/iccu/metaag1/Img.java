@@ -140,7 +140,7 @@ public class Img {
     @XmlAttribute(name = "imggroupID")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
-    protected Object imggroupID;
+    protected String imggroupID;
     @XmlAttribute(name = "holdingsID")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
@@ -601,7 +601,7 @@ public class Img {
      *     {@link Object }
      *     
      */
-    public Object getImggroupID() {
+    public String getImggroupID() {
         return imggroupID;
     }
 
@@ -613,7 +613,7 @@ public class Img {
      *     {@link Object }
      *     
      */
-    public void setImggroupID(Object value) {
+    public void setImggroupID(String value) {
         this.imggroupID = value;
     }
 
