@@ -49,6 +49,10 @@ public class MetsNamespacePrefix extends NamespacePrefixMapper {
 			return "ead";
 		else if (namespaceUri.equals("http://www.randalf.mx/schedaF"))
 			return "csm";
+		else if (namespaceUri.equals("http://www.loc.gov/mods/v3"))
+			return "mods";
+		else if (namespaceUri.equals("http://www.w3.org/2001/XMLSchema"))
+			return "";
 		else {
 			if (suggestion == null
 					&& !namespaceUri.equals("")

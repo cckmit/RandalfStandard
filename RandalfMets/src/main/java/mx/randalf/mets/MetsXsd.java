@@ -36,9 +36,19 @@ public class MetsXsd extends ReadXsd<MetsType> {
 	public MetsXsd() {
 	}
 
-	@SuppressWarnings("unused")
 	public boolean write(MetsType obj, File fMag) throws XsdException, PubblicaException  {
 		String schemaLocation = null;
+		schemaLocation = "http://www.loc.gov/METS/ "
+			       + "http://www.loc.gov/standards/mets/mets.xsd "
+			       + "http://www.loc.gov/standards/mix/mix20/ "
+			       + "http://www.loc.gov/standards/mix/mix20/mix20.xsd "
+			       + "http://purl.org/dc/elements/1.1/ "
+			       + "http://dublincore.org/schemas/xmls/simpledc20021212.xsd";
+		return write(obj, fMag, schemaLocation);
+	}
+
+	@SuppressWarnings("unused")
+	public boolean write(MetsType obj, File fMag, String schemaLocation) throws XsdException, PubblicaException  {
 		ParserException errors = null;
 		Parser parser = null;
 		boolean result = false;
@@ -49,12 +59,6 @@ public class MetsXsd extends ReadXsd<MetsType> {
 		BufferedWriter bw = null;
 		
 		try {
-			schemaLocation = "http://www.loc.gov/METS/ "
-					       + "http://www.loc.gov/standards/mets/mets.xsd "
-					       + "http://www.loc.gov/standards/mix/mix20/ "
-					       + "http://www.loc.gov/standards/mix/mix20/mix20.xsd "
-					       + "http://purl.org/dc/elements/1.1/ "
-					       + "http://dublincore.org/schemas/xmls/simpledc20021212.xsd";
 			write(obj, fMag, new MetsNamespacePrefix(), null, null,
 					schemaLocation);
 

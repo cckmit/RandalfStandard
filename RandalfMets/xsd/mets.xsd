@@ -222,11 +222,14 @@ mptr and area elements for mapping MPEG21 DII Identifier values
 	elementFormDefault="qualified" attributeFormDefault="unqualified"
 	xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ead="urn:isbn:1-931666-22-9"
 	xmlns:mag="http://www.iccu.sbn.it/metaAG1.pdf" xmlns:mix="http://www.loc.gov/mix/v20"
-	xmlns:csm="http://www.randalf.mx/schedaF">
+	xmlns:csm="http://www.randalf.mx/schedaF" xmlns:mods="http://www.loc.gov/mods/v3">
 	<xsd:import namespace="http://www.w3.org/1999/xlink"
 		schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd"/>
-	<xsd:import namespace="http://purl.org/dc/elements/1.1/"
-		schemaLocation="http://dublincore.org/schemas/xmls/qdc/2003/04/02/dc.xsd"/>
+	<!--
+	<xsd:import namespace="http://www.w3.org/1999/xlink"
+		schemaLocation="http://www.loc.gov/standards/mods/xlink.xsd"/>
+		-->
+	<xsd:import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="dc.xsd"/>
 	<!--
 	<xsd:import namespace="http://purl.org/dc/elements/1.1/"
 		schemaLocation="http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/dc.xsd"/>
@@ -236,6 +239,7 @@ mptr and area elements for mapping MPEG21 DII Identifier values
 		schemaLocation="http://www.loc.gov/standards/mix/mix20/mix20.xsd"/>
 	<xsd:import namespace="http://www.iccu.sbn.it/metaAG1.pdf" schemaLocation="mag.xsd"/>
 	<xsd:import namespace="http://www.randalf.mx/schedaF" schemaLocation="SchedaF.xsd"/>
+	<xsd:import namespace="http://www.loc.gov/mods/v3" schemaLocation="ndnpmods-3-0.xsd"/>
 	<xsd:element name="mets">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">METS: Metadata Encoding and Transmission Standard.
@@ -734,7 +738,7 @@ to clarify the differences between the ORDER, ORDERLABEL, and LABEL attributes f
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:attribute>
-					<xsd:attribute name="FILEID" type="xsd:IDREF" use="optional">
+					<xsd:attribute name="FILEID" type="xsd:string" use="optional">
 						<xsd:annotation>
 							<xsd:documentation xml:lang="en">FILEID (IDREF/O): An optional attribute that provides the XML ID identifying the &lt;file&gt; element that links to and/or contains the digital content represented by the &lt;fptr&gt;. A &lt;fptr&gt; element should only have a FILEID attribute value if it does not have a child &lt;area&gt;, &lt;par&gt; or &lt;seq&gt; element. If it has a child element, then the responsibility for pointing to the relevant content falls to this child element or its descendants.
 							</xsd:documentation>
@@ -758,7 +762,7 @@ to clarify the differences between the ORDER, ORDERLABEL, and LABEL attributes f
 			</xsd:annotation>
 		</xsd:attribute>
 		<xsd:attributeGroup ref="ORDERLABELS"/>
-		<xsd:attribute name="DMDID" type="xsd:IDREFS" use="optional">
+		<xsd:attribute name="DMDID" type="xsd:string" use="optional">
 			<xsd:annotation>
 				<xsd:documentation xml:lang="en">DMDID (IDREFS/O): Contains the ID attribute values identifying the &lt;dmdSec&gt;, elements in the METS document that contain or link to descriptive metadata pertaining to the structural division represented by the current &lt;div&gt; element.  For more information on using METS IDREFS and IDREF type attributes for internal linking, see Chapter 4 of the METS Primer.
 				</xsd:documentation>
@@ -1295,6 +1299,7 @@ TCF.
 									<xsd:element maxOccurs="unbounded" ref="mag:gen"/>
 									<xsd:element maxOccurs="unbounded" ref="mag:holdings"> </xsd:element>
 									<xsd:element maxOccurs="unbounded" ref="csm:csm_root"/>
+									<xsd:element maxOccurs="unbounded" ref="mods:mods"/>
 								</xsd:choice>
 							</xsd:complexType>
 						</xsd:element>
@@ -1565,7 +1570,7 @@ TCF.
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="DMDID" type="xsd:IDREFS" use="optional">
+		<xsd:attribute name="DMDID" type="xsd:string" use="optional">
 			<xsd:annotation>
 				<xsd:documentation xml:lang="en">DMDID (IDREFS/O): Contains the ID attribute values identifying the &lt;dmdSec&gt;, elements in the METS document that contain or link to descriptive metadata pertaining to the content file represented by the current &lt;file&gt; element.  For more information on using METS IDREFS and IDREF type attributes for internal linking, see Chapter 4 of the METS Primer.
 				</xsd:documentation>
