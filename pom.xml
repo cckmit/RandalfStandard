@@ -2,14 +2,15 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mx.randalf.standard</groupId>
   <artifactId>RandalfStandard</artifactId>
-  <version>1.0.1</version>
+  <version>2.0.0</version>
   <packaging>pom</packaging>
   <modules>
   	<module>RandalfDC</module>
   	<module>RandalfMag</module>
   	<module>RandalfMets</module>
   	<module>RandalfSchedaF</module>
-  </modules>
+  	<module>RandalfTet</module>
+</modules>
 	<distributionManagement>
 		<repository>
 			<id>mvn-bncf</id>
