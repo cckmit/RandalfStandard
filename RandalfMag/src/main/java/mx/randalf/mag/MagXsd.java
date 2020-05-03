@@ -471,8 +471,14 @@ public class MagXsd extends ReadXsd<Metadigit> {
 				(calcImg.getFreqPlan()!=null && 
 					imageMetrics.getSamplingfrequencyplane().intValue()==calcImg.getFreqPlan().intValue())
 				) &&
-			imageMetrics.getXsamplingfrequency().intValue()==calcImg.getDpi().intValue() &&
-			imageMetrics.getYsamplingfrequency().intValue()==calcImg.getDpi().intValue() &&
+			( (calcImg.getDpi()==null  &&
+					imageMetrics.getXsamplingfrequency()== null &&
+					imageMetrics.getYsamplingfrequency()==null) ||
+			  (calcImg.getDpi()!=null  &&
+				imageMetrics.getXsamplingfrequency().intValue()==calcImg.getDpi().intValue() &&
+				imageMetrics.getYsamplingfrequency().intValue()==calcImg.getDpi().intValue() 
+			  )
+					) &&
 			imageMetrics.getPhotometricinterpretation().value().equals(getPhotoInterValue(calcImg).value()) &&
 			imageMetrics.getBitpersample().equals(calcImg.getBitPerSampleValue())){
 			return true;
