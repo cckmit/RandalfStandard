@@ -1,0 +1,34 @@
+/**
+ * 
+ */
+package org.teic.ns._10;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * @author massi
+ *
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name="respStmt")
+public class RespStmt extends Author {
+
+  private String resp;
+
+  /**
+   * 
+   */
+  public RespStmt() {
+  }
+
+  public String getResp() {
+    return resp;
+  }
+
+  public void setResp(String resp) {
+    this.resp = resp;
+  }
+
+}

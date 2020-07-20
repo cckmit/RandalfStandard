@@ -10,7 +10,8 @@
   	<module>RandalfMets</module>
   	<module>RandalfSchedaF</module>
   	<module>RandalfTet</module>
-</modules>
+  	<module>RandalfTei</module>
+  </modules>
 	<distributionManagement>
 		<repository>
 			<id>mvn-bncf</id>
