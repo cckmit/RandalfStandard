@@ -8,8 +8,7 @@ import it.sbn.iccu.metaag1.Metadigit;
 import java.io.File;
 import java.io.FileFilter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.im4java.process.ProcessStarter;
 
 import mx.randalf.interfacException.exception.PubblicaException;
@@ -22,7 +21,7 @@ import mx.randalf.xsd.exception.XsdException;
  */
 public class CalcImgMagCmd {
 
-	private Logger log = LogManager.getLogger(CalcImgMagCmd.class);
+	private Logger log = Logger.getLogger(CalcImgMagCmd.class);
 
 	/**
 	 * 

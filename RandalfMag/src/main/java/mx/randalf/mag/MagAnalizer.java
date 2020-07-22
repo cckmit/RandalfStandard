@@ -11,8 +11,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Hashtable;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import mx.randalf.interfacException.exception.PubblicaException;
 import mx.randalf.xsd.exception.XsdException;
@@ -27,7 +26,7 @@ import mx.randalf.xsd.exception.XsdException;
  */
 public class MagAnalizer {
 
-	private Logger log = LogManager.getLogger(getClass());
+	private Logger log = Logger.getLogger(getClass());
 
 	private String folderScan;
 
