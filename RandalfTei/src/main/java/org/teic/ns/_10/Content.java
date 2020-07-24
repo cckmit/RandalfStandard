@@ -287,9 +287,9 @@ public class Content {
     return result;
   }
 
-  public Note getNote(String type) {
+  public Note getNote(String n, String type) {
     List<Object> result = null;
-    result = getNotes(type);
+    result = getNotes(n, type);
     if (result != null && result.size() > 0) {
       return (Note) result.get(0);
     } else {
@@ -298,10 +298,10 @@ public class Content {
 
   }
 
-  public List<Object> getNotes(String type) {
+  public List<Object> getNotes(String n, String type) {
     List<Object> result = null;
 
-    result = get(Note.class, null, null, type, null, null, null);
+    result = get(Note.class, n, null, type, null, null, null);
     return result;
   }
 

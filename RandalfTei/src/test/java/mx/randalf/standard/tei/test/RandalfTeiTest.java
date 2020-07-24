@@ -122,6 +122,14 @@ public class RandalfTeiTest {
       print(prefix, "Library", randalfTeiDC.getLibrary());
     }
     
+    
+    if (randalfTeiDC.getLanguage() != null) {
+      print(prefix, "Language", randalfTeiDC.getLanguage());
+    }
+    
+    if (randalfTeiDC.getRelation() != null) {
+      print(prefix, "Relation", randalfTeiDC.getRelation());
+    }
     if (randalfTeiDC.getMsParts() != null) {
       print(prefix, "MsParts", randalfTeiDC.getMsParts());
     }
@@ -138,7 +146,7 @@ public class RandalfTeiTest {
         randalfTeiDC.getStru().size()>0) {
       print(prefix, "[STRU]");
       if (randalfTeiDC.getN()!=null) {
-        print(prefix+"\t", randalfTeiDC.getTitle().get(0)+" Unita codicologica "+randalfTeiDC.getN());
+        print(prefix+"\t", (randalfTeiDC.getTitle()!= null && randalfTeiDC.getTitle().size()>0?randalfTeiDC.getTitle().get(0):"")+" Unita codicologica "+randalfTeiDC.getN());
         prefix += "\t";
       }
       for (Object randalfTeiDCStru: randalfTeiDC.getStru()) {

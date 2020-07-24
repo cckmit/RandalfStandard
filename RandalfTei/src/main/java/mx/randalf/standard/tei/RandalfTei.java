@@ -72,20 +72,6 @@ public class RandalfTei {
     }
 
   }
-  //
-  // public String getLevel() {
-  // return "d";
-  // }
-  //
-  // public String getIdentifier() {
-  // String identifier = null;
-  //
-  // identifier =
-  // tei.getText().get(0).getBody().getListBibl().getMsDesc().get(0).getXmlId();
-  //
-  //
-  // return identifier;
-  // }
 
   public List<RandalfTeiDC> getRandalfTeiDCs() {
     return randalfTeiDCs;

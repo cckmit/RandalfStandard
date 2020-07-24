@@ -2,16 +2,10 @@ package mx.randalf.standard.tei.carteggio;
 
 import java.util.List;
 
-import org.teic.ns._10.Author;
-import org.teic.ns._10.MsContents;
-import org.teic.ns._10.MsDesc;
-import org.teic.ns._10.MsItem;
-import org.teic.ns._10.MsPart;
 import org.teic.ns._10.Name;
 import org.teic.ns._10.RespStmt;
 
 import mx.randalf.standard.tei.dc.RandalfTeiDC;
-import mx.randalf.xsd.exception.XsdException;
 
 public abstract class RandalfTeiDCCarteggioAll
     extends
@@ -26,20 +20,14 @@ public abstract class RandalfTeiDCCarteggioAll
       for (Object object : all) {
         if (object instanceof RespStmt) {
           init((RespStmt) object);
-        } else {
-//          System.out.println(object.getClass().getName());
         }
-        // if (object instanceof Author) {
-        // if (!(object instanceof RespStmt)) {
-        // init((Author) object);
-        // }
-        // }
       }
     }
   }
 
   private void init(RespStmt respStmt) {
     Name mittente = null;
+    Name destinatario = null;
     if (respStmt.getResp().equals("mittente")) {
       mittente = respStmt.getName("mittente");
       if (!mittente.getType().equals("variantems")) {
@@ -47,9 +35,12 @@ public abstract class RandalfTeiDCCarteggioAll
           addCreator(cleanString(creator));
         }
       }
-    } else if (!respStmt.getResp().equals("destinatario")) {
-      if (!mittente.getType().equals("variantems")) {
-        System.out.println("description......");
+    } else if (respStmt.getResp().equals("destinatario")) {
+      destinatario = respStmt.getName("destinatario");
+      if (!destinatario.getType().equals("variantems")) {
+        for (String contributor : destinatario.getContent()) {
+          addContributor(cleanString(contributor));
+        }
       }
     }
   }

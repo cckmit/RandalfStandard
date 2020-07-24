@@ -87,7 +87,7 @@ public abstract class RandalfDCDescritionManoscritto<T>
         && physDesc.getObjectDesc().getSupportDesc() != null
         && physDesc.getObjectDesc().getSupportDesc().getExtent() != null) {
       note = physDesc.getObjectDesc().getSupportDesc().getExtent()
-          .getNote("partistampa");
+          .getNote(null, "partistampa");
       if (note != null) {
         description += (description.trim().equals("")
             ? ""
@@ -131,7 +131,7 @@ public abstract class RandalfDCDescritionManoscritto<T>
     if (physDesc.getDecoDesc() != null) {
       decoNote = physDesc.getDecoDesc().getDecoNote("Iniziali", "");
       if (decoNote != null) {
-        note = decoNote.getNote("noteiniziali");
+        note = decoNote.getNote(null, "noteiniziali");
         if (note != null && note.getContent() != null
             && note.getContent().size() > 0) {
           description += (description.trim().equals("") ? "" : " ; ")
@@ -146,7 +146,7 @@ public abstract class RandalfDCDescritionManoscritto<T>
             + decoNote.getContent().get(0).trim();
       }
       if (decoNote != null) {
-        note = decoNote.getNote("notealtrielementi");
+        note = decoNote.getNote(null, "notealtrielementi");
         if (note != null && note.getContent() != null
             && note.getContent().size() > 0) {
           description += (description.trim().equals("") ? "" : " : ")
@@ -219,7 +219,7 @@ public abstract class RandalfDCDescritionManoscritto<T>
             + "righi per pagina " + num.getContent().get(0).trim();
       }
 
-      note = physDesc.getMusicNotation().getNote(null);
+      note = physDesc.getMusicNotation().getNote(null,null);
       if (note != null && note.getContent() != null
           && note.getContent().size() > 0) {
         description += (description.trim().equals("") ? "" : "; ")

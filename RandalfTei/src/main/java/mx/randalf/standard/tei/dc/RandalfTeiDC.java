@@ -42,6 +42,10 @@ public abstract class RandalfTeiDC<T> {
 
   private List<String> library = null;
 
+  private List<String> language= null;
+
+  private List<String> relation= null;
+
   private List<T> msParts = null;
 
   private List<T> msItems = null;
@@ -273,5 +277,27 @@ public abstract class RandalfTeiDC<T> {
 
   public void setN(String n) {
     this.n = n;
+  }
+
+  public List<String> getLanguage() {
+    return language;
+  }
+
+  public void addLanguage(String language) {
+    if (this.language == null) {
+      this.language = new ArrayList<String>();
+    }
+    this.language.add(language);
+  }
+
+  public List<String> getRelation() {
+    return relation;
+  }
+
+  public void addRelation(String relation) {
+    if (this.relation == null) {
+      this.relation = new ArrayList<String>();
+    }
+    this.relation.add(relation);
   }
 }

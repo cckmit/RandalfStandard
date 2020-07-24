@@ -5,17 +5,21 @@ import java.util.List;
 import org.teic.ns._10.Measure;
 import org.teic.ns._10.MsDesc;
 import org.teic.ns._10.MsPart;
+import org.teic.ns._10.Note;
+import org.teic.ns._10.Num;
+import org.teic.ns._10.OrigDate;
 import org.teic.ns._10.Term;
+import org.teic.ns._10.Title;
 
-import mx.randalf.standard.tei.dc.RandalfTeiDC;
-import mx.randalf.standard.tei.manoscritto.RandalfTeiDCManoscritto;
 import mx.randalf.xsd.exception.XsdException;
 
 public class RandalfTeiDCCarteggio extends RandalfTeiDCCarteggioMsPart {
 
   public RandalfTeiDCCarteggio() {
     super();
-    setLevel("d");
+    setLevel("m");
+    addType("manoscritto");
+    addLanguage("ita");
   }
 
   @Override
@@ -49,7 +53,7 @@ public class RandalfTeiDCCarteggio extends RandalfTeiDCCarteggioMsPart {
   private void elabora(MsDesc msDesc) throws XsdException {
 
     initDescription(msDesc);
-    // init(msDesc.getMsIdentifier());
+    init(msDesc.getMsIdentifier());
     init(msDesc.getMsContents());
     // init(msDesc.getHistory());
     // init(msDesc, msDesc.getPhysDesc());
@@ -62,12 +66,15 @@ public class RandalfTeiDCCarteggio extends RandalfTeiDCCarteggioMsPart {
   private void initDescription(MsDesc msDesc) {
     String description = "Il documento fa parte di un";
     Term term = null;
+    Num num = null;
     Measure measure = null;
-    
-    if (msDesc.getPhysDesc()!= null) {
+    List<Object> objects = null;
+
+    if (msDesc.getPhysDesc() != null) {
       if (msDesc.getPhysDesc().getObjectDesc() != null) {
-        if (msDesc.getPhysDesc().getObjectDesc().getSupportDesc()!= null) {
-          if (msDesc.getPhysDesc().getObjectDesc().getSupportDesc().getMaterial().equals("chart")){
+        if (msDesc.getPhysDesc().getObjectDesc().getSupportDesc() != null) {
+          if (msDesc.getPhysDesc().getObjectDesc().getSupportDesc()
+              .getMaterial().equals("chart")) {
             description += " manoscritto cartaceo";
           }
         }
@@ -77,19 +84,54 @@ public class RandalfTeiDCCarteggio extends RandalfTeiDCCarteggioMsPart {
         if (term != null) {
           description += " composito";
         }
-        term = msDesc.getPhysDesc().getP().getTerm("01Elementi", null, null);
-        if (term != null && term.getContent() != null
-            && term.getContent().size() > 0) {
-          description += " di " + term.getContent().get(0);
+        num = msDesc.getPhysDesc().getP().getNum("01Elementi");
+        if (num != null && num.getContent() != null
+            && num.getContent().size() > 0) {
+          description += " di " + num.getContent().get(0);
         }
       }
       if (msDesc.getPhysDesc().getObjectDesc() != null) {
         if (msDesc.getPhysDesc().getObjectDesc().getSupportDesc() != null) {
-          if (msDesc.getPhysDesc().getObjectDesc().getSupportDesc().getExtent() != null) {
-            measure = msDesc.getPhysDesc().getObjectDesc().getSupportDesc().getExtent().getMeasure("Corpo");
+          if (msDesc.getPhysDesc().getObjectDesc().getSupportDesc()
+              .getExtent() != null) {
+            measure = msDesc.getPhysDesc().getObjectDesc().getSupportDesc()
+                .getExtent().getMeasure("Corpo");
             if (measure != null) {
-              description += "";
+              description += " cc. " + measure.getContent().get(0);
             }
+            measure = msDesc.getPhysDesc().getObjectDesc().getSupportDesc()
+                .getExtent().getMeasure("carte");
+            if (measure != null) {
+              description += " " + measure.getUnit() + " "
+                  + measure.getContent().get(0);
+            }
+          }
+        }
+      }
+    }
+
+    if (msDesc.getHistory() != null) {
+      if (msDesc.getHistory().getOrigin() != null) {
+        if (msDesc.getHistory().getOrigin().getP() != null) {
+          objects = msDesc.getHistory().getOrigin().getP().getOrigDates(null);
+          if (objects != null) {
+            for (Object object : objects) {
+              description += " ; Estremi cronologici " + ((OrigDate) object).getContent().get(0);
+            }
+          }
+        }
+      }
+      if (msDesc.getHistory().getSummary() != null) {
+        objects = msDesc.getHistory().getSummary().getTitles();
+        if (objects != null) {
+          for (Object object: objects) {
+            description += " Camicia: " + ((Title) object).getContent().get(0);
+          }
+        }
+        objects = msDesc.getHistory().getSummary().getNotes("38", "ossercamcia");
+        if (objects != null) {
+          for (Object object: objects) {
+            description += " ; " + ((Note) object).getContent().get(0);
           }
         }
       }

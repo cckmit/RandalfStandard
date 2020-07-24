@@ -102,7 +102,7 @@ public abstract class RandalfDCDescritionUnitaCodicologiche<T>
     if (physDesc.getDecoDesc() != null) {
       decoNote = physDesc.getDecoDesc().getDecoNote("Iniziali", "");
       if (decoNote != null) {
-        note = decoNote.getNote("noteiniziali");
+        note = decoNote.getNote(null, "noteiniziali");
         if (note != null && note.getContent() != null
             && note.getContent().size() > 0) {
           description += (description.trim().equals("") ? "" : " ; ")
@@ -117,7 +117,7 @@ public abstract class RandalfDCDescritionUnitaCodicologiche<T>
             + decoNote.getContent().get(0);
       }
       if (decoNote != null) {
-        note = decoNote.getNote("notealtrielementi");
+        note = decoNote.getNote(null, "notealtrielementi");
         if (note != null && note.getContent() != null
             && note.getContent().size() > 0) {
           description += (description.trim().equals("") ? "" : " : ")
@@ -190,7 +190,7 @@ public abstract class RandalfDCDescritionUnitaCodicologiche<T>
             + "righi per pagina " + num.getContent().get(0);
       }
 
-      note = physDesc.getMusicNotation().getNote(null);
+      note = physDesc.getMusicNotation().getNote(null, null);
       if (note != null && note.getContent() != null
           && note.getContent().size() > 0) {
         description += (description.trim().equals("") ? "" : "; ")
