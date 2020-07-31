@@ -647,6 +647,16 @@ public class MagXsd extends ReadXsd<Metadigit> {
 				ris = Photometricinterpretationtype.fromValue(calcImg.getInfo()
 						.getProperty("Colorspace"));
 			}
+		} else if (calcImg.getInfo().getProperty("Image:Colorspace") != null) {
+			if (calcImg.getInfo().getProperty("Image:Colorspace").equals("sRGB")){
+				ris = Photometricinterpretationtype.RGB;
+			} else if (calcImg.getInfo().getProperty("Image:Colorspace").equals("Gray")){
+					ris = Photometricinterpretationtype.BLACK_IS_ZERO;
+			} else {
+				ris = Photometricinterpretationtype.fromValue(calcImg.getInfo()
+						.getProperty("Image:Colorspace"));
+			}
+
 		}
 		return ris;
 	}
@@ -670,6 +680,12 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		compression = calcImg.getInfo().getProperty("Compression");
 		if (compression == null){
 			compression = calcImg.getInfo().getProperty("Compression", 0);
+		}
+		if (compression == null){
+			compression = calcImg.getInfo().getProperty("Image:Compression");
+		}
+		if (compression == null){
+			compression = calcImg.getInfo().getProperty("Image:Compression", 0);
 		}
 		if (compression == null || compression.equalsIgnoreCase("None")) {
 			ris = CompressiontypeNiso.UNCOMPRESSED;
