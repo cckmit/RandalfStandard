@@ -332,7 +332,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 		MD5 md5 = null;
 
 		try {
-
+			log.info("Img: "+fImg.getAbsolutePath());
 			md5 = new MD5(fImg);
 			img.setMd5(md5.getDigest());
 			img.setFilesize(BigInteger.valueOf(fImg.length()));
@@ -691,6 +691,8 @@ public class MagXsd extends ReadXsd<Metadigit> {
 			ris = CompressiontypeNiso.UNCOMPRESSED;
 		} else if (compression.equalsIgnoreCase("JPEG")){
 			ris = CompressiontypeNiso.JPG;
+		} else if (compression.equalsIgnoreCase("JPEG2000")){
+			ris = CompressiontypeNiso.JPG;
 		}
 		return ris;
 	}
@@ -727,6 +729,8 @@ public class MagXsd extends ReadXsd<Metadigit> {
 			ris = ImgMimetype.IMAGE_PNG;
 		else if (code.equals("PDF"))
 			ris = ImgMimetype.APPLICATION_PDF;
+		else if (code.equals("JP2"))
+			ris = ImgMimetype.IMAGE_JPEG;
 		return ris;
 	}
 

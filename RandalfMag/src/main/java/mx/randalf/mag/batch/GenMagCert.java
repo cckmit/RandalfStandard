@@ -69,7 +69,6 @@ public class GenMagCert {
 		File[] fl = null;
 		
 		try {
-			System.out.println("Elaboro: "+fElab.getAbsolutePath());
 			fl = fElab.listFiles(new FileFilter() {
 				
 				@Override
