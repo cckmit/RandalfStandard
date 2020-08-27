@@ -63,7 +63,7 @@ public abstract class RandalfTeiDCCarteggioMsIdentifier  extends RandalfTeiDCCar
       }
 
       if (!repositoryKey.equals("")) {
-        library += (library.trim().equals("") ? "" : " - ") + repositoryKey;
+        library += (library.trim().equals("") ? "" : "-") + repositoryKey;
       }
 
       if (library != null && !library.trim().equals("")) {

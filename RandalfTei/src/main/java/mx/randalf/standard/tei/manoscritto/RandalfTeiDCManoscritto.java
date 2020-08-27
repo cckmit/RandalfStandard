@@ -13,6 +13,7 @@ public class RandalfTeiDCManoscritto
     super();
     setLevel("m");
     addType("manoscritto");
+    addLanguage("greco antico (fino al 1453)");
   }
 
   @Override

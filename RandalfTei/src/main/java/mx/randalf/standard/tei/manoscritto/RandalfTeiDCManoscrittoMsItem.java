@@ -39,9 +39,9 @@ public abstract class RandalfTeiDCManoscrittoMsItem
         for (Object object2 : names) {
           name = (Name) object2;
           if (name.getN().indexOf("_")>-1){
-            n = new Integer(name.getN().substring(0,name.getN().indexOf("_")).replace("_", ""));
+            n = Integer.valueOf(name.getN().substring(0,name.getN().indexOf("_")).replace("_", ""));
           } else {
-            n =new Integer(name.getN());
+            n =Integer.valueOf(name.getN());
           }
           if (n > 3) {
             if (name.getContent() != null && name.getContent().size() > 0

@@ -67,7 +67,7 @@ public abstract class RandalfTeiDCManoscrittoMsIdentifier
       }
 
       if (!repositoryKey.equals("")) {
-        library += (library.trim().equals("") ? "" : " - ") + repositoryKey;
+        library += (library.trim().equals("") ? "" : "-") + repositoryKey;
       }
 
       if (library != null && !library.trim().equals("")) {

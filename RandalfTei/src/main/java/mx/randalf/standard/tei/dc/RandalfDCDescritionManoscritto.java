@@ -52,6 +52,8 @@ public abstract class RandalfDCDescritionManoscritto<T>
     List<Object> names = null;
     Summary summary = null;
     Osservazioni osservazioni = null;
+    String content = null;
+    String[] st = null;
 
     physDesc = msDesc.getPhysDesc();
 
@@ -251,8 +253,14 @@ public abstract class RandalfDCDescritionManoscritto<T>
       if (summary != null && summary.getContent() != null
           && summary.getContent().size() > 0
           && !summary.getContent().get(0).trim().equals("")) {
+    	  content = summary.getContent().get(0).trim();
+    	  st = content.split("\n");
+    	  content = "";
+    	  for (String testo: st) {
+    		  content += (content.trim().equals("")?"":" ")+testo.trim();
+    	  }
         description += (description.trim().equals("") ? "" : " ; ")
-            + summary.getContent().get(0).trim();
+            + content;
       }
     }
 

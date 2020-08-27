@@ -182,6 +182,36 @@ public abstract class RandalfTeiDC<T> {
     return value.trim();
   }
 
+  protected String cleanStringCreator(String value) {
+	  String secondo = null;
+	  int pos = 0;
+	  
+	  pos = value.indexOf("$");
+	  if (pos >-1) {
+		  secondo = value.substring(pos+1);
+		  value = cleanString(value.substring(0, pos));
+		  value += " <";
+		  pos = secondo.indexOf("$$");
+		  if (pos>-1) {
+			  if (pos>0) {
+				  value += secondo.substring(0, pos);
+				  value +=" ; ";
+			  }
+			  secondo = secondo.substring(pos+2);
+		  } else {
+			  pos = secondo.indexOf("$");
+			  if (pos==0) {
+				  secondo = secondo.substring(pos+1);
+			  }
+		  }
+		  value +=secondo;
+		  value += ">";
+	  } else {
+		  value = cleanString(value);
+	  }
+    return value.trim();
+  }
+
   public List<String> getDescription() {
     return description;
   }

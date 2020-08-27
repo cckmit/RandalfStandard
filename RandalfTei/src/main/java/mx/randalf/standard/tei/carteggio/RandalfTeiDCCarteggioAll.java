@@ -32,14 +32,14 @@ public abstract class RandalfTeiDCCarteggioAll
       mittente = respStmt.getName("mittente");
       if (!mittente.getType().equals("variantems")) {
         for (String creator : mittente.getContent()) {
-          addCreator(cleanString(creator));
+          addCreator(cleanStringCreator(creator));
         }
       }
     } else if (respStmt.getResp().equals("destinatario")) {
       destinatario = respStmt.getName("destinatario");
       if (!destinatario.getType().equals("variantems")) {
         for (String contributor : destinatario.getContent()) {
-          addContributor(cleanString(contributor));
+          addContributor(cleanStringCreator(contributor));
         }
       }
     }
