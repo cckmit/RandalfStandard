@@ -23,13 +23,16 @@ public class CalcImgMagCmd {
 
 	private Logger log = Logger.getLogger(CalcImgMagCmd.class);
 
+	private String schemaXsd = "http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
+	
 	/**
 	 * 
 	 */
-	public CalcImgMagCmd(String calcImgPath) {
+	public CalcImgMagCmd(String calcImgPath, String schemaXsd) {
 		if (calcImgPath != null){
 			ProcessStarter.setGlobalSearchPath(calcImgPath);
 		}
+		setSchemaXsd(schemaXsd);
 	}
 
 	/**
@@ -41,7 +44,8 @@ public class CalcImgMagCmd {
 		if (args.length>0){
 			f = new File(args[0]);
 			if (f.exists()){
-				cimc = new CalcImgMagCmd((args.length>1?args[1]:null));
+				cimc = new CalcImgMagCmd((args.length>1?args[1]:null),
+						(args.length>2?args[2]:null));
 				cimc.scanFolder(f);
 			} else {
 				System.out.println("La cartella ["+f.getAbsolutePath()+"] non esiste");
@@ -49,7 +53,8 @@ public class CalcImgMagCmd {
 		} else {
 			System.out.println("E' necessario indicare i seguenti paramenti: ");
 			System.out.println("1) path da analizzare");
-			System.out.println("2) path in cui è installato il pacchetto ImageMagic (optionale)");
+			System.out.println("2) Utilizzato per indircare lo Schema Xsd da utilizzare per la validazione (Opzionale, Default http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd)");
+			System.out.println("3) path in cui è installato il pacchetto ImageMagic (optionale)");
 		}
 	}
 
@@ -103,7 +108,7 @@ public class CalcImgMagCmd {
 		
 		try {
 			log.debug("\nAnalizzo il file ["+f.getAbsolutePath()+"]");
-			magXsd = new MagXsd();
+			magXsd = new MagXsd(schemaXsd);
 			mag = magXsd.read(f);
 			if (mag.getImg()!= null && mag.getImg().size()>0){
 				for (int x=0; x<mag.getImg().size(); x++){
@@ -148,5 +153,13 @@ public class CalcImgMagCmd {
 		} catch (PubblicaException e) {
 			log.error("["+f.getAbsolutePath()+"] "+e.getMessage(), e);
 		}
+	}
+
+	public String getSchemaXsd() {
+		return schemaXsd;
+	}
+
+	public void setSchemaXsd(String schemaXsd) {
+		this.schemaXsd = schemaXsd;
 	}
 }

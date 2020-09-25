@@ -118,7 +118,7 @@ public class GenMagCmd {
 				mag.getImg().add(genImg(new BigInteger(sequenceNumber+""), "Pagina: "+sequenceNumber, identifier, file.getName()));
 			}
 			
-			magXsd = new MagXsd();
+			magXsd = new MagXsd("http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd");
 			magXsd.write(mag, fileMag, new MagNamespacePrefix(), null, null, 
 					"http://www.iccu.sbn.it/metaAG1.pdf http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd");
 		} catch (XsdException e) {

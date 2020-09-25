@@ -110,7 +110,7 @@ public class GenMag2Cmd {
 			files= getFile(isArchivio, isInternet, isIntranet, pathMag);
 			Arrays.sort(files);
 
-			magXsd = new MagXsd();
+			magXsd = new MagXsd("http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd");
 			for(File file : files){
 				sequenceNumber++;
 				if ((sequenceNumber%10)==0){

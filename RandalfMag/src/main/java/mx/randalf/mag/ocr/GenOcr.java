@@ -45,25 +45,31 @@ import org.niso.pdfs.datadict.DocMimetypeNiso;
  */
 public class GenOcr {
 
+	public void setSchemaXsd(String schemaXsd) {
+		this.schemaXsd = schemaXsd;
+	}
+
 	private Logger log = Logger.getLogger(getClass());
 
 	/**
-	 * Variabile utilizzata per indicare la cartella da analizzare che contiene
-	 * i file Xml
+	 * Variabile utilizzata per indicare la cartella da analizzare che contiene i
+	 * file Xml
 	 */
 	private String folderXml = null;
 
 	/**
-	 * Variabile utilizzata per indicare se eseguire il test della presenza del
-	 * file Certificato prima di procedere all'aggiornamento del Mag
+	 * Variabile utilizzata per indicare se eseguire il test della presenza del file
+	 * Certificato prima di procedere all'aggiornamento del Mag
 	 */
 	private boolean checkCert = true;
 
 	/**
-	 * Variabile utilizzata per indicare l'usage dell'oggetto digitale da
-	 * utilizzare per generare l'Ocr
+	 * Variabile utilizzata per indicare l'usage dell'oggetto digitale da utilizzare
+	 * per generare l'Ocr
 	 */
 	private String usage = "1";
+
+	private String schemaXsd = "http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
 
 	private ConvertOcr convertOcr = null;
 
@@ -95,22 +101,26 @@ public class GenOcr {
 				} else if (args[x].equals("-u")) {
 					x++;
 					genOcr.setUsage(args[x]);
+				} else if (args[x].equals("-sx")) {
+					x++;
+					genOcr.setSchemaXsd(args[x]);
 				}
 			}
 
 			if (genOcr.isValid()) {
 				genOcr.esegui();
 			} else {
-				System.out
-						.println("I parametri necessari per l'esecuzione del programma sono:");
-				System.out
-						.println("1) -pi <Path> indica il percorso in cui si trovano i file Xml (Obbligatorio)");
-				System.out
-						.println("2) -dc Utilizzato per disabilitare i test dei File Certificati prima della elaborazione dei Mag (Opzionali)");
-				System.out
-						.println("3) -ec Utilizzato per abilitaare i test dei File Certificati prima della elaborazione dei Mag (Default)");
-				System.out
-						.println("4) -u <Usage> Utilizzato per indicare l'usage dell'oggetto digitale da usare per la generazione dei files OCR (Opzionale, Default 1)");
+				System.out.println("I parametri necessari per l'esecuzione del programma sono:");
+				System.out.println("1) -pi <Path> indica il percorso in cui si trovano i file Xml (Obbligatorio)");
+				System.out.println(
+						"2) -dc Utilizzato per disabilitare i test dei File Certificati prima della elaborazione dei Mag (Opzionali)");
+				System.out.println(
+						"3) -ec Utilizzato per abilitaare i test dei File Certificati prima della elaborazione dei Mag (Default)");
+				System.out.println(
+						"4) -u <Usage> Utilizzato per indicare l'usage dell'oggetto digitale da usare per la generazione dei files OCR (Opzionale, Default 1)");
+				System.out.println(
+						"5) -sw <schemaXsd> Utilizzato per indircare lo Schema Xsd da utilizzare per la validazione (Opzionale, Default http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd)");
+
 			}
 		} catch (GenOcrException e) {
 			e.printStackTrace();
@@ -125,10 +135,9 @@ public class GenOcr {
 				if (pathMag == null) {
 					pathMag = new File(folderXml);
 				}
-				esegui(pathMag);
+				esegui(pathMag, schemaXsd);
 			} else {
-				throw new GenOcrException(
-						"Non risultano valorizzati tutti i parametri necessari");
+				throw new GenOcrException("Non risultano valorizzati tutti i parametri necessari");
 			}
 		} catch (GenOcrException e) {
 			throw e;
@@ -136,7 +145,7 @@ public class GenOcr {
 
 	}
 
-	private void esegui(File pathMag) throws GenOcrException {
+	private void esegui(File pathMag, String schemaXsd) throws GenOcrException {
 		File[] fMags = null;
 
 		try {
@@ -148,8 +157,7 @@ public class GenOcr {
 						boolean result = false;
 
 						if (!f.getName().trim().startsWith(".")
-								&& (f.isDirectory() || f.getName().trim()
-										.endsWith(".xml"))) {
+								&& (f.isDirectory() || f.getName().trim().endsWith(".xml"))) {
 							result = true;
 						}
 						return result;
@@ -158,21 +166,20 @@ public class GenOcr {
 
 				for (File f : fMags) {
 					if (f.isDirectory()) {
-						esegui(f);
+						esegui(f, schemaXsd);
 					} else {
-						elabMag(f);
+						elabMag(f, schemaXsd);
 					}
 				}
 			} else {
-				throw new GenOcrException("La cartella ["
-						+ pathMag.getAbsolutePath() + "] non esiste");
+				throw new GenOcrException("La cartella [" + pathMag.getAbsolutePath() + "] non esiste");
 			}
 		} catch (GenOcrException e) {
 			throw e;
 		}
 	}
 
-	private void elabMag(File fMag) throws GenOcrException {
+	private void elabMag(File fMag, String schemaXsd) throws GenOcrException {
 		Metadigit mag = null;
 		File fXmlOcr = null;
 		File fXmlCert = null;
@@ -188,14 +195,13 @@ public class GenOcr {
 		MD5 md5 = null;
 
 		try {
-			magXsd = new MagXsd();
+			magXsd = new MagXsd(schemaXsd);
 			fXmlOcr = new File(fMag.getAbsolutePath() + ".ocr");
 			if (!fXmlOcr.exists()) {
 				fXmlCert = new File(fMag.getAbsolutePath() + ".cert");
 				if ((checkCert && !fXmlCert.exists()) || !checkCert) {
 					mag = magXsd.read(fMag);
-					if (mag.getOcr() == null
-							|| mag.getOcr().size() < mag.getImg().size()) {
+					if (mag.getOcr() == null || mag.getOcr().size() < mag.getImg().size()) {
 
 						for (int x = 0; x < mag.getImg().size(); x++) {
 
@@ -204,52 +210,33 @@ public class GenOcr {
 								if (mag.getOcr().size() < (x + 1)) {
 									fImg = getImg(mag.getImg().get(x));
 									if (fImg != null) {
-										fImage = new File(fMag.getParentFile()
-												.getAbsolutePath()
-												+ File.separator + fImg);
+										fImage = new File(
+												fMag.getParentFile().getAbsolutePath() + File.separator + fImg);
 
 										if (fImage.exists()) {
 
-											imgOgg = "./"
-													+ fImage.getParentFile()
-															.getParentFile()
-															.getName();
+											imgOgg = "./" + fImage.getParentFile().getParentFile().getName();
 
-											fOcr = new File(fImage
-													.getParentFile()
-													.getParentFile()
-													.getAbsolutePath()
-													+ File.separator
-													+ "Ocr"
-													+ File.separator
-													+ df.format(conta) + ".txt");
+											fOcr = new File(fImage.getParentFile().getParentFile().getAbsolutePath()
+													+ File.separator + "Ocr" + File.separator + df.format(conta)
+													+ ".txt");
 											convertOcr.convertOcr(fImage, fOcr);
 											if (fOcr.length() > 0) {
 												ocr = new Ocr();
-												ocr.setSequenceNumber(new BigInteger(
-														conta + ""));
+												ocr.setSequenceNumber(new BigInteger(conta + ""));
 												ocr.setNomenclature(mag.getImg().get(x).getNomenclature());
 												ocr.getUsage().add("a");
 												ocrFile = new Link();
-												ocrFile.setHref(imgOgg
-														+ "/Ocr/"
-														+ df.format(conta)
-														+ ".txt");
+												ocrFile.setHref(imgOgg + "/Ocr/" + df.format(conta) + ".txt");
 												ocr.setFile(ocrFile);
 												md5 = new MD5(fOcr);
 												ocr.setMd5(md5.getDigest());
-												ocr.setSource(mag.getImg()
-														.get(x).getFile());
-												ocr.setFilesize(BigInteger
-														.valueOf(fOcr.length()));
+												ocr.setSource(mag.getImg().get(x).getFile());
+												ocr.setFilesize(BigInteger.valueOf(fOcr.length()));
 												ocr.setFormat(new DocFormat());
 												ocr.getFormat().setName("TXT");
-												ocr.getFormat()
-														.setMime(
-																DocMimetypeNiso.TEXT_PLAIN);
-												ocr.getFormat()
-														.setCompression(
-																DocCompressiontypeNiso.UNCOMPRESSED);
+												ocr.getFormat().setMime(DocMimetypeNiso.TEXT_PLAIN);
+												ocr.getFormat().setCompression(DocCompressiontypeNiso.UNCOMPRESSED);
 												ocr.setSoftwareOcr("tesseract 3.03");
 												ocr.setDatetimecreated(getDateTimeCreate(fOcr));
 												mag.getOcr().add(ocr);
@@ -335,8 +322,7 @@ public class GenOcr {
 		}
 	}
 
-	private XMLGregorianCalendar getDateTimeCreate(File fOcr)
-			throws DatatypeConfigurationException {
+	private XMLGregorianCalendar getDateTimeCreate(File fOcr) throws DatatypeConfigurationException {
 		XMLGregorianCalendar ris = null;
 		GregorianCalendar gc = null;
 		gc = new GregorianCalendar();
@@ -370,8 +356,8 @@ public class GenOcr {
 	}
 
 	/**
-	 * Metodo utilizzato per leggere la cartella indicata come contenitore dei
-	 * file Xml
+	 * Metodo utilizzato per leggere la cartella indicata come contenitore dei file
+	 * Xml
 	 * 
 	 * @return the folderXml
 	 */
@@ -380,19 +366,18 @@ public class GenOcr {
 	}
 
 	/**
-	 * Metodo utilizzato per indicare la cartella indicata come contenitore dei
-	 * file Xml
+	 * Metodo utilizzato per indicare la cartella indicata come contenitore dei file
+	 * Xml
 	 * 
-	 * @param folderXml
-	 *            the folderXml to set
+	 * @param folderXml the folderXml to set
 	 */
 	public void setFolderXml(String folderXml) {
 		this.folderXml = folderXml;
 	}
 
 	/**
-	 * Metodo utilizzato per testare se eseguire il controlli dei certificati
-	 * oppure no
+	 * Metodo utilizzato per testare se eseguire il controlli dei certificati oppure
+	 * no
 	 * 
 	 * @return the checkCert
 	 */
@@ -403,8 +388,7 @@ public class GenOcr {
 	/**
 	 * Metodo utilizzato per indicare se eseguire i Test dei certificati
 	 * 
-	 * @param checkCert
-	 *            the checkCert to set
+	 * @param checkCert the checkCert to set
 	 */
 	public void setCheckCert(boolean checkCert) {
 		this.checkCert = checkCert;
@@ -432,8 +416,7 @@ public class GenOcr {
 	}
 
 	/**
-	 * @param usage
-	 *            the usage to set
+	 * @param usage the usage to set
 	 */
 	public void setUsage(String usage) {
 		this.usage = usage;

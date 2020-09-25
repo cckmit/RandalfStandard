@@ -43,7 +43,13 @@ public class MagAnalizer {
 	private String folderUsage3 = null;
 
 	private boolean aggUsage = false;
+
+	private String schemaXsd = "http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
 	
+	public void setSchemaXsd(String schemaXsd) {
+		this.schemaXsd = schemaXsd;
+	}
+
 	/**
 	 * 
 	 */
@@ -80,6 +86,9 @@ public class MagAnalizer {
 					magAnalizer.setFolderUsage3(args[x]);
 				} else if (args[x].equalsIgnoreCase("-au")) {
 					magAnalizer.setAggUsage(true);
+				} else if (args[x].equals("-sx")) {
+					x++;
+					magAnalizer.setSchemaXsd(args[x]);
 				}
 			}
 			magAnalizer.scan();
@@ -105,13 +114,15 @@ public class MagAnalizer {
 				.println("* -cu3 (Opzionale) Viene utilizzato indicare il nome della Cartella che contiene i file per usage 3");
 		System.out
 		.println("* -au (Opzionale) Viene utilizzato indicare se aggiornare il campo usage se necessario");
+		System.out.println(
+				"* -sw <schemaXsd> Utilizzzto per indircare lo Schema Xsd da utilizzare per la validazione (Opzionale, Default http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd)");
 	}
 
 	public void scan() {
-		scan(new File(folderScan));
+		scan(new File(folderScan), schemaXsd);
 	}
 
-	private void scan(File folder) {
+	private void scan(File folder, String schemaXsd) {
 		File[] fl = null;
 
 		fl = folder.listFiles(new FileFilter() {
@@ -133,14 +144,14 @@ public class MagAnalizer {
 		});
 		for (File file : fl) {
 			if (file.isDirectory()) {
-				scan(file);
+				scan(file, schemaXsd);
 			} else {
-				check(file);
+				check(file, schemaXsd);
 			}
 		}
 	}
 
-	private void check(File file) {
+	private void check(File file, String schemaXsd) {
 		MagXsd magXsd = null;
 		Metadigit mag = null;
 		String key = null;
@@ -150,7 +161,7 @@ public class MagAnalizer {
 		File fCert = null;
 		try {
 			fCert = new File(file.getAbsolutePath() + ".cert");
-			magXsd = new MagXsd();
+			magXsd = new MagXsd(schemaXsd);
 			mag = magXsd.read(file);
 			if (!fCert.exists()) {
 				log.info("\n"+"Analizzo il file ["+file.getAbsolutePath()+"]");

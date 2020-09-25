@@ -59,17 +59,40 @@ public class MagXsd extends ReadXsd<Metadigit> {
 
 	private Logger log = Logger.getLogger(getClass());
 
+	private String schemaLocation = null;
+
 	/**
 	 * 
 	 */
-	public MagXsd() {
+	public MagXsd(String schemaXsd) {
+		if (schemaXsd == null) {
+			schemaXsd = "http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
+		}
+		schemaLocation = "http://www.iccu.sbn.it/metaAG1.pdf "+schemaXsd;
 	}
 
 	public String write(Metadigit obj, Boolean jaxbFormattedOutput) throws XsdException {
-		String schemaLocation = null;
+		GregorianCalendar gc = null;
+		XMLGregorianCalendar xgc = null;
+		String result = "";
 
-		schemaLocation = "http://www.iccu.sbn.it/metaAG1.pdf http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
-		return write(obj, new MagNamespacePrefix(), null, null, schemaLocation, jaxbFormattedOutput);
+		try {
+			if (obj.getGen() != null) {
+				gc = new GregorianCalendar();
+				xgc = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+				if (obj.getGen().getCreation()==null) {
+					obj.getGen().setCreation(xgc);
+				}
+				obj.getGen().setLastUpdate(xgc);
+			}
+			result = write(obj, new MagNamespacePrefix(), null, null, schemaLocation, jaxbFormattedOutput);
+		} catch (DatatypeConfigurationException e) {
+			log.error(e.getMessage(), e);
+			throw new XsdException(e.getMessage(), e);
+		} catch (XsdException e) {
+			throw e;
+		}
+		return result;
 	}
 
 	public boolean write(Metadigit obj, File fMag, Boolean jaxbFormattedOutput) throws XsdException,
@@ -92,7 +115,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 			PubblicaException {
 		ParserException errors = null;
 		Parser parser = null;
-		String schemaLocation = null;
+//		String schemaLocation = null;
 		MD5 md5Tools = null;
 		String md5 = null;
 		File fCert = null;
@@ -111,7 +134,7 @@ public class MagXsd extends ReadXsd<Metadigit> {
 				}
 				obj.getGen().setLastUpdate(xgc);
 			}
-			schemaLocation = "http://www.iccu.sbn.it/metaAG1.pdf http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
+//			schemaLocation = "http://www.iccu.sbn.it/metaAG1.pdf http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
 			write(obj, fMag, new MagNamespacePrefix(), null, null,
 					schemaLocation, jaxbFormattedOutput);
 

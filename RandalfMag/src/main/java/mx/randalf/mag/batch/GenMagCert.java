@@ -22,13 +22,16 @@ import mx.randalf.xsd.exception.XsdException;
  */
 public class GenMagCert {
 
+	private String schemaXsd = "http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd";
+
 	/**
 	 * 
 	 */
-	public GenMagCert(String calcImgPath) {
+	public GenMagCert(String calcImgPath, String schemaXsd) {
 		if (calcImgPath != null){
 			ProcessStarter.setGlobalSearchPath(calcImgPath);
 		}
+		this.schemaXsd = schemaXsd;
 	}
 
 	/**
@@ -37,9 +40,9 @@ public class GenMagCert {
 	public static void main(String[] args) {
 		GenMagCert genMagCert = null;
 		try {
-			if (args.length==2) {
-				genMagCert = new GenMagCert(args[0]);
-				genMagCert.esegui(args[1]);
+			if (args.length==3) {
+				genMagCert = new GenMagCert(args[0], args[1]);
+				genMagCert.esegui(args[2]);
 			}
 		} catch (XsdException e) {
 			e.printStackTrace();
@@ -54,9 +57,9 @@ public class GenMagCert {
 		try {
 			fElab = new File(pathElab);
 			if (fElab.isDirectory()) {
-				scanFolder(fElab);
+				scanFolder(fElab, schemaXsd);
 			} else {
-				elabFile(fElab);
+				elabFile(fElab, schemaXsd);
 			}
 		} catch (XsdException e) {
 			throw e;
@@ -65,7 +68,7 @@ public class GenMagCert {
 		}
 	}
 
-	private void scanFolder(File fElab) throws XsdException, PubblicaException {
+	private void scanFolder(File fElab, String schemaXsd) throws XsdException, PubblicaException {
 		File[] fl = null;
 		
 		try {
@@ -93,9 +96,9 @@ public class GenMagCert {
 			Arrays.sort(fl);
 			for(File f : fl) {
 				if (f.isDirectory()) {
-					scanFolder(f);
+					scanFolder(f, schemaXsd);
 				} else {
-					elabFile(f);
+					elabFile(f, schemaXsd);
 				}
 			}
 		} catch (XsdException e) {
@@ -105,7 +108,7 @@ public class GenMagCert {
 		}
 	}
 
-	private void elabFile(File fMag) throws XsdException, PubblicaException {
+	private void elabFile(File fMag, String schemaXsd) throws XsdException, PubblicaException {
 		Metadigit mag = null;
 		MagXsd magXsd = null;
 		String[] usages =null;
@@ -114,7 +117,7 @@ public class GenMagCert {
 		File fSolr = null;
 		
 		try {
-			magXsd = new MagXsd();
+			magXsd = new MagXsd(schemaXsd);
 			mag = magXsd.read(fMag);
 			usages = new String[1];
 			usages[0]="3";
