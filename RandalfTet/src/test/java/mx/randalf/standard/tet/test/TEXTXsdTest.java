@@ -5,7 +5,6 @@ package mx.randalf.standard.tet.test;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import com.pdflib.xml.tet5.tet_5.Box;
 import com.pdflib.xml.tet5.tet_5.Document;
