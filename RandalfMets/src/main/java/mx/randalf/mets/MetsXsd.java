@@ -19,7 +19,8 @@ import mx.randalf.parser.exception.ParserException;
 import mx.randalf.xsd.ReadXsd;
 import mx.randalf.xsd.exception.XsdException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -28,7 +29,7 @@ import org.xml.sax.SAXParseException;
  */
 public class MetsXsd extends ReadXsd<MetsType> {
 
-	private Logger log = Logger.getLogger(MetsXsd.class);
+	private Logger log = LogManager.getLogger(MetsXsd.class);
 
 	/**
 	 * 
