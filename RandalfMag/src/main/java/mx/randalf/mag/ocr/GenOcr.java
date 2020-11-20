@@ -87,6 +87,7 @@ public class GenOcr {
 	 */
 	public static void main(String[] args) {
 		GenOcr genOcr = null;
+		File fileMd5 = null;
 
 		try {
 			genOcr = new GenOcr();
@@ -104,11 +105,14 @@ public class GenOcr {
 				} else if (args[x].equals("-sx")) {
 					x++;
 					genOcr.setSchemaXsd(args[x]);
+				} else if (args[x].equals("-md5")) {
+					x++;
+					fileMd5 = new File(args[x]);
 				}
 			}
 
 			if (genOcr.isValid()) {
-				genOcr.esegui();
+				genOcr.esegui(fileMd5);
 			} else {
 				System.out.println("I parametri necessari per l'esecuzione del programma sono:");
 				System.out.println("1) -pi <Path> indica il percorso in cui si trovano i file Xml (Obbligatorio)");
@@ -127,7 +131,7 @@ public class GenOcr {
 		}
 	}
 
-	public void esegui() throws GenOcrException {
+	public void esegui(File fileMd5) throws GenOcrException {
 		File pathMag = null;
 
 		try {
@@ -135,7 +139,7 @@ public class GenOcr {
 				if (pathMag == null) {
 					pathMag = new File(folderXml);
 				}
-				esegui(pathMag, schemaXsd);
+				esegui(pathMag, schemaXsd, fileMd5);
 			} else {
 				throw new GenOcrException("Non risultano valorizzati tutti i parametri necessari");
 			}
@@ -145,7 +149,7 @@ public class GenOcr {
 
 	}
 
-	private void esegui(File pathMag, String schemaXsd) throws GenOcrException {
+	private void esegui(File pathMag, String schemaXsd, File fileMd5) throws GenOcrException {
 		File[] fMags = null;
 
 		try {
@@ -166,9 +170,9 @@ public class GenOcr {
 
 				for (File f : fMags) {
 					if (f.isDirectory()) {
-						esegui(f, schemaXsd);
+						esegui(f, schemaXsd, fileMd5);
 					} else {
-						elabMag(f, schemaXsd);
+						elabMag(f, schemaXsd, fileMd5);
 					}
 				}
 			} else {
@@ -179,7 +183,7 @@ public class GenOcr {
 		}
 	}
 
-	private void elabMag(File fMag, String schemaXsd) throws GenOcrException {
+	private void elabMag(File fMag, String schemaXsd, File fileMd5) throws GenOcrException {
 		Metadigit mag = null;
 		File fXmlOcr = null;
 		File fXmlCert = null;
@@ -229,7 +233,7 @@ public class GenOcr {
 												ocrFile = new Link();
 												ocrFile.setHref(imgOgg + "/Ocr/" + df.format(conta) + ".txt");
 												ocr.setFile(ocrFile);
-												md5 = new MD5(fOcr);
+												md5 = new MD5(fOcr, fileMd5);
 												ocr.setMd5(md5.getDigest());
 												ocr.setSource(mag.getImg().get(x).getFile());
 												ocr.setFilesize(BigInteger.valueOf(fOcr.length()));
@@ -247,12 +251,12 @@ public class GenOcr {
 							}
 						}
 
-						if (magXsd.write(mag, fMag, true)) {
-							genFileCertOcr(fMag);
+						if (magXsd.write(mag, fMag, true, fileMd5)) {
+							genFileCertOcr(fMag, fileMd5);
 						}
 
 					} else {
-						genFileCertOcr(fMag);
+						genFileCertOcr(fMag, fileMd5);
 					}
 				}
 			}
@@ -279,10 +283,13 @@ public class GenOcr {
 			throw new GenOcrException(e.getMessage(), e);
 		} catch (GenOcrException e) {
 			throw e;
+		} catch (InterruptedException e) {
+			log.error(e.getMessage(), e);
+			throw new GenOcrException(e.getMessage(), e);
 		}
 	}
 
-	private void genFileCertOcr(File fMag) throws GenOcrException {
+	private void genFileCertOcr(File fMag, File fileMd5) throws GenOcrException {
 		MD5 md5Tools = null;
 		String md5 = null;
 		File fXmlOcr = null;
@@ -290,7 +297,7 @@ public class GenOcr {
 		BufferedWriter bwOcr = null;
 
 		try {
-			md5Tools = new MD5(fMag);
+			md5Tools = new MD5(fMag, fileMd5);
 			md5 = md5Tools.getDigest();
 
 			fXmlOcr = new File(fMag.getAbsolutePath() + ".ocr");
@@ -304,6 +311,9 @@ public class GenOcr {
 			log.error(e.getMessage(), e);
 			throw new GenOcrException(e.getMessage(), e);
 		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			throw new GenOcrException(e.getMessage(), e);
+		} catch (InterruptedException e) {
 			log.error(e.getMessage(), e);
 			throw new GenOcrException(e.getMessage(), e);
 		} finally {

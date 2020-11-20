@@ -42,7 +42,7 @@ public class GenMagCert {
 		try {
 			if (args.length==3) {
 				genMagCert = new GenMagCert(args[0], args[1]);
-				genMagCert.esegui(args[2]);
+				genMagCert.esegui(args[2], new File(args[3]));
 			}
 		} catch (XsdException e) {
 			e.printStackTrace();
@@ -51,15 +51,15 @@ public class GenMagCert {
 		}
 	}
 
-	public void esegui(String pathElab) throws XsdException, PubblicaException {
+	public void esegui(String pathElab, File fileMd5) throws XsdException, PubblicaException {
 		File fElab = null;
 		
 		try {
 			fElab = new File(pathElab);
 			if (fElab.isDirectory()) {
-				scanFolder(fElab, schemaXsd);
+				scanFolder(fElab, schemaXsd, fileMd5);
 			} else {
-				elabFile(fElab, schemaXsd);
+				elabFile(fElab, schemaXsd, fileMd5);
 			}
 		} catch (XsdException e) {
 			throw e;
@@ -68,7 +68,7 @@ public class GenMagCert {
 		}
 	}
 
-	private void scanFolder(File fElab, String schemaXsd) throws XsdException, PubblicaException {
+	private void scanFolder(File fElab, String schemaXsd, File fileMd5) throws XsdException, PubblicaException {
 		File[] fl = null;
 		
 		try {
@@ -96,9 +96,9 @@ public class GenMagCert {
 			Arrays.sort(fl);
 			for(File f : fl) {
 				if (f.isDirectory()) {
-					scanFolder(f, schemaXsd);
+					scanFolder(f, schemaXsd, fileMd5);
 				} else {
-					elabFile(f, schemaXsd);
+					elabFile(f, schemaXsd, fileMd5);
 				}
 			}
 		} catch (XsdException e) {
@@ -108,7 +108,7 @@ public class GenMagCert {
 		}
 	}
 
-	private void elabFile(File fMag, String schemaXsd) throws XsdException, PubblicaException {
+	private void elabFile(File fMag, String schemaXsd, File fileMd5) throws XsdException, PubblicaException {
 		Metadigit mag = null;
 		MagXsd magXsd = null;
 		String[] usages =null;
@@ -128,7 +128,7 @@ public class GenMagCert {
 				}
 				magXsd.calcImg(img, fMag.getParentFile().getAbsolutePath(), usages);
 			}
-			if (magXsd.write(mag, fMag, true)) {
+			if (magXsd.write(mag, fMag, true, fileMd5)) {
 				fElabOK = new File(fMag.getAbsolutePath()+".elabOK");
 				if (fElabOK.exists()) {
 					if (!fElabOK.delete()) {

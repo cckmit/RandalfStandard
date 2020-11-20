@@ -46,7 +46,7 @@ public class CalcImgMagCmd {
 			if (f.exists()){
 				cimc = new CalcImgMagCmd((args.length>1?args[1]:null),
 						(args.length>2?args[2]:null));
-				cimc.scanFolder(f);
+				cimc.scanFolder(f, new File(args[3]));
 			} else {
 				System.out.println("La cartella ["+f.getAbsolutePath()+"] non esiste");
 			}
@@ -58,7 +58,7 @@ public class CalcImgMagCmd {
 		}
 	}
 
-	public void scanFolder(File f){
+	public void scanFolder(File f, File fileMd5){
 		File[] fl = null;
 		File fCert = null;
 		
@@ -66,7 +66,7 @@ public class CalcImgMagCmd {
 				!f.getName().startsWith(".")) {
 			fCert = new File(f.getAbsolutePath()+".cert");
 			if (!fCert.exists()){
-				calcImg(f);
+				calcImg(f, fileMd5);
 			} else {
 				System.out.println("Il file ["+f.getAbsolutePath()+"] risulta già elaborato");
 			}
@@ -94,15 +94,15 @@ public class CalcImgMagCmd {
 			
 			for ( int x=0; x<fl.length; x++){
 				if (fl[x].isDirectory()){
-					scanFolder(fl[x]);
+					scanFolder(fl[x], fileMd5);
 				} else {
-					calcImg(fl[x]);
+					calcImg(fl[x], fileMd5);
 				}
 			}
 		}
 	}
 
-	private void calcImg(File f){
+	private void calcImg(File f, File fileMd5){
 		MagXsd magXsd = null;
 		Metadigit mag = null;
 		
@@ -116,7 +116,7 @@ public class CalcImgMagCmd {
 						if (((x+1)%100)==0){
 							log.debug("\nImg. "+(x+1)+"/"+mag.getImg().size());
 						}
-						magXsd.calcImg(mag.getImg().get(x), f.getParentFile().getAbsolutePath());
+						magXsd.calcImg(mag.getImg().get(x), f.getParentFile().getAbsolutePath(), fileMd5);
 					} catch (XsdException e) {
 						log.error("["+f.getAbsolutePath()+" img "+(x+1)+"] "+e.getMessage(), e);
 					}
@@ -128,7 +128,7 @@ public class CalcImgMagCmd {
 						if (((x+1)%100)==0){
 							log.debug("\nOcr. "+(x+1)+"/"+mag.getOcr().size());
 						}
-						magXsd.calcOcr(mag.getOcr().get(x), f.getParentFile().getAbsolutePath());
+						magXsd.calcOcr(mag.getOcr().get(x), f.getParentFile().getAbsolutePath(), fileMd5);
 					} catch (XsdException e) {
 						log.error("["+f.getAbsolutePath()+" ocr "+(x+1)+"] "+e.getMessage(), e);
 					}
@@ -140,14 +140,14 @@ public class CalcImgMagCmd {
 						if (((x+1)%100)==0){
 							log.debug("\nDoc. "+(x+1)+"/"+mag.getDoc().size());
 						}
-						magXsd.calcDoc(mag.getDoc().get(x), f.getParentFile().getAbsolutePath());
+						magXsd.calcDoc(mag.getDoc().get(x), f.getParentFile().getAbsolutePath(), fileMd5);
 					} catch (XsdException e) {
 						log.error("["+f.getAbsolutePath()+" doc "+(x+1)+"] "+e.getMessage(), e);
 					}
 				}
 			}
 			log.debug("\nImg. "+mag.getImg().size());
-			magXsd.write(mag, f, true);
+			magXsd.write(mag, f, true, fileMd5);
 		} catch (XsdException e) {
 			log.error("["+f.getAbsolutePath()+"] "+e.getMessage(), e);
 		} catch (PubblicaException e) {

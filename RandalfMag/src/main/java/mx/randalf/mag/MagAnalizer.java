@@ -61,6 +61,7 @@ public class MagAnalizer {
 	 */
 	public static void main(String[] args) {
 		MagAnalizer magAnalizer = null;
+		File fileMd5 = null;
 		if (args.length > 0) {
 			magAnalizer = new MagAnalizer();
 			for (int x = 0; x < args.length; x++) {
@@ -89,9 +90,12 @@ public class MagAnalizer {
 				} else if (args[x].equals("-sx")) {
 					x++;
 					magAnalizer.setSchemaXsd(args[x]);
+				} else if (args[x].equals("-md5")) {
+					x++;
+					fileMd5 = new File(args[x]);
 				}
 			}
-			magAnalizer.scan();
+			magAnalizer.scan(fileMd5);
 		} else {
 			printHelp();
 		}
@@ -118,11 +122,11 @@ public class MagAnalizer {
 				"* -sw <schemaXsd> Utilizzzto per indircare lo Schema Xsd da utilizzare per la validazione (Opzionale, Default http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd)");
 	}
 
-	public void scan() {
-		scan(new File(folderScan), schemaXsd);
+	public void scan(File fileMd5) {
+		scan(new File(folderScan), schemaXsd, fileMd5);
 	}
 
-	private void scan(File folder, String schemaXsd) {
+	private void scan(File folder, String schemaXsd, File fileMd5) {
 		File[] fl = null;
 
 		fl = folder.listFiles(new FileFilter() {
@@ -144,14 +148,14 @@ public class MagAnalizer {
 		});
 		for (File file : fl) {
 			if (file.isDirectory()) {
-				scan(file, schemaXsd);
+				scan(file, schemaXsd, fileMd5);
 			} else {
-				check(file, schemaXsd);
+				check(file, schemaXsd, fileMd5);
 			}
 		}
 	}
 
-	private void check(File file, String schemaXsd) {
+	private void check(File file, String schemaXsd, File fileMd5) {
 		MagXsd magXsd = null;
 		Metadigit mag = null;
 		String key = null;
@@ -218,7 +222,7 @@ public class MagAnalizer {
 					}
 				}
 				if (!isError) {
-					magXsd.write(mag, file, true);
+					magXsd.write(mag, file, true, fileMd5);
 				}
 			} else {
 				if (isCheckIdentifierDuplicate()) {

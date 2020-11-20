@@ -47,13 +47,13 @@ public class GenMag2Cmd {
 
 		if (args.length==2){
 			genMagCmd = new GenMag2Cmd(args[0]);
-			genMagCmd.esegui(args[1]);
+			genMagCmd.esegui(args[1], new File(args[2]));
 		} else {
 			System.out.println("Indicare la cartella da analizzare");
 		}
 	}
 
-	public void esegui(String path){
+	public void esegui(String path, File fileMd5){
 		File pathMag = null;
 		File fileMag = null;
 		File pathArchivio = null;
@@ -81,7 +81,7 @@ public class GenMag2Cmd {
 				}
 				if (isArchivio || isInternet|| isIntranet){
 					log.info("\nInizio elaborare il file: "+fileMag.getAbsolutePath());
-					genMag(pathMag.getName(), isArchivio, isInternet, isIntranet, pathMag, fileMag);
+					genMag(pathMag.getName(), isArchivio, isInternet, isIntranet, pathMag, fileMag, fileMd5);
 					log.info("\nFine elaborare il file: "+fileMag.getAbsolutePath());
 				} else {
 					log.error("\nMancano le cartelle delle immagini in ["+pathMag.getAbsolutePath()+"]");
@@ -95,7 +95,7 @@ public class GenMag2Cmd {
 	}
 
 	private void genMag(String identifier, boolean isArchivio, boolean isInternet, boolean isIntranet, File pathMag, 
-			File fileMag){
+			File fileMag, File fileMd5){
 		Metadigit mag = null;
 		MagXsd magXsd = null;
 		File[] files = null;
@@ -148,7 +148,7 @@ public class GenMag2Cmd {
 							"3", 
 							file.getName());
 				}
-				magXsd.calcImg(img, pathMag.getParentFile().getAbsolutePath());
+				magXsd.calcImg(img, pathMag.getParentFile().getAbsolutePath(), fileMd5);
 				mag.getImg().add(img);
 			}
 			

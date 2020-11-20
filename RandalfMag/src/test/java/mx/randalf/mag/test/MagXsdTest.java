@@ -43,7 +43,7 @@ public class MagXsdTest {
 		if (args.length==2) {
 			ProcessStarter.setGlobalSearchPath(args[0]);
 			magXsdTest = new MagXsdTest();
-			magXsdTest.esegui(new File(args[1]));
+			magXsdTest.esegui(new File(args[1]), new File(args[2]));
 		} else {
 			System.out.println("E' necessario indicare i seguenti parametri:");
 			System.out.println("1) path di installazione dell'ImageMagick");
@@ -51,7 +51,7 @@ public class MagXsdTest {
 		}
 	}
 
-	public void esegui(File fMag) {
+	public void esegui(File fMag, File fileMd5) {
 		MagXsd magXsd = null;
 		Metadigit mag = null;
 		long sequenza = 0;
@@ -68,7 +68,7 @@ public class MagXsdTest {
 				for (int x=0; x<mag.getImg().size(); x++) {
 					sequenza++;
 					mag.getImg().get(x).setSequenceNumber(BigInteger.valueOf(sequenza));
-					magXsd.calcImg(mag.getImg().get(x), fMag.getParentFile().getAbsolutePath(),mag.getGen());
+					magXsd.calcImg(mag.getImg().get(x), fMag.getParentFile().getAbsolutePath(),mag.getGen(), fileMd5);
 				}
 			}
 			if (mag.getOcr()!= null && mag.getOcr().size()>0) {
@@ -79,7 +79,7 @@ public class MagXsdTest {
 						mag.getOcr().get(x).setSequenceNumber(BigInteger.valueOf(sequenza));
 						fOcr = new File(fMag.getParentFile().getAbsolutePath()+
 								File.separator+mag.getOcr().get(x).getFile().getHref());
-						md5 = new MD5(fOcr);
+						md5 = new MD5(fOcr, fileMd5);
 						mag.getOcr().get(x).setMd5(md5.getDigest());
 						mag.getOcr().get(x).setFilesize(BigInteger.valueOf(fOcr.length()));
 						mag.getOcr().get(x).setDatetimecreated(getDateTimeCreate(fOcr.lastModified()));
@@ -91,12 +91,14 @@ public class MagXsdTest {
 						e.printStackTrace();
 					} catch (DatatypeConfigurationException e) {
 						e.printStackTrace();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
 				
 			}
 			
-			magXsd.write(mag, fMag, true);
+			magXsd.write(mag, fMag, true, fileMd5);
 		} catch (XsdException e) {
 			e.printStackTrace();
 		} catch (PubblicaException e) {
