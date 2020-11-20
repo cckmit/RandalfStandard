@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.randalf.mag</groupId>
 	<artifactId>RandalfMag</artifactId>
-	<version>3.0.13</version>
+	<version>3.0.14</version>
 	<description>Librerie utilizzate per la gestione dei tracciati Mag</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>mx.randalf.digest</groupId>
 			<artifactId>RandalfDigest</artifactId>
-			<version>3.0.1</version>
+			<version>3.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>mx.randalf.digital</groupId>
