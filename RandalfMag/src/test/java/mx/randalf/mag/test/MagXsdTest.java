@@ -40,7 +40,7 @@ public class MagXsdTest {
 	public static void main(String[] args) {
 		MagXsdTest magXsdTest = null;
 		
-		if (args.length==2) {
+		if (args.length==3) {
 			ProcessStarter.setGlobalSearchPath(args[0]);
 			magXsdTest = new MagXsdTest();
 			magXsdTest.esegui(new File(args[1]), new File(args[2]));
@@ -48,6 +48,7 @@ public class MagXsdTest {
 			System.out.println("E' necessario indicare i seguenti parametri:");
 			System.out.println("1) path di installazione dell'ImageMagick");
 			System.out.println("2) file da analizzare");
+			System.out.println("3) file md5");
 		}
 	}
 
@@ -68,7 +69,7 @@ public class MagXsdTest {
 				for (int x=0; x<mag.getImg().size(); x++) {
 					sequenza++;
 					mag.getImg().get(x).setSequenceNumber(BigInteger.valueOf(sequenza));
-					magXsd.calcImg(mag.getImg().get(x), fMag.getParentFile().getAbsolutePath(),mag.getGen(), fileMd5);
+					magXsd.calcImg(mag.getImg().get(x), fMag.getParentFile().getAbsolutePath(),null, fileMd5);
 				}
 			}
 			if (mag.getOcr()!= null && mag.getOcr().size()>0) {
@@ -98,7 +99,7 @@ public class MagXsdTest {
 				
 			}
 			
-			magXsd.write(mag, fMag, true, fileMd5);
+			magXsd.write(mag, fMag, false, fileMd5);
 		} catch (XsdException e) {
 			e.printStackTrace();
 		} catch (PubblicaException e) {
