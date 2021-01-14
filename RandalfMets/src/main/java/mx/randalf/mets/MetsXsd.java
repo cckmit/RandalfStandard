@@ -36,7 +36,7 @@ public class MetsXsd extends ReadXsd<MetsType> {
 	public MetsXsd() {
 	}
 
-	public boolean write(MetsType obj, File fMag) throws XsdException, PubblicaException  {
+	public boolean write(MetsType obj, File fMag, File fileMd5) throws XsdException, PubblicaException  {
 		String schemaLocation = null;
 		schemaLocation = "http://www.loc.gov/METS/ "
 			       + "http://www.loc.gov/standards/mets/mets.xsd "
@@ -44,11 +44,11 @@ public class MetsXsd extends ReadXsd<MetsType> {
 			       + "http://www.loc.gov/standards/mix/mix20/mix20.xsd "
 			       + "http://purl.org/dc/elements/1.1/ "
 			       + "http://dublincore.org/schemas/xmls/simpledc20021212.xsd";
-		return write(obj, fMag, schemaLocation);
+		return write(obj, fMag, schemaLocation, fileMd5);
 	}
 
 	@SuppressWarnings("unused")
-	public boolean write(MetsType obj, File fMag, String schemaLocation) throws XsdException, PubblicaException  {
+	public boolean write(MetsType obj, File fMag, String schemaLocation, File fileMd5) throws XsdException, PubblicaException  {
 		ParserException errors = null;
 		Parser parser = null;
 		boolean result = false;
@@ -66,7 +66,7 @@ public class MetsXsd extends ReadXsd<MetsType> {
 			parser = new Parser(fMag.getAbsolutePath(), errors, true);
 			if (errors.getNumErr() == 0) {
 				result = true;
-				md5Tools = new MD5(fMag);
+				md5Tools = new MD5(fMag, fileMd5);
 				md5 = md5Tools.getDigest();
 
 				fCert = new File(fMag.getAbsolutePath() + ".cert");
@@ -94,6 +94,9 @@ public class MetsXsd extends ReadXsd<MetsType> {
 			log.error(e.getMessage(), e);
 			throw e;
 		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			throw new XsdException(e.getMessage(), e);
+		} catch (InterruptedException e) {
 			log.error(e.getMessage(), e);
 			throw new XsdException(e.getMessage(), e);
 		} finally {
