@@ -44,17 +44,18 @@ public class CalcImgMagCmd {
 		if (args.length>0){
 			f = new File(args[0]);
 			if (f.exists()){
-				cimc = new CalcImgMagCmd((args.length>1?args[1]:null),
-						(args.length>2?args[2]:null));
-				cimc.scanFolder(f, new File(args[3]));
+				cimc = new CalcImgMagCmd(args[1],
+						(args.length>3?args[3]:null));
+				cimc.scanFolder(f, new File(args[2]));
 			} else {
 				System.out.println("La cartella ["+f.getAbsolutePath()+"] non esiste");
 			}
 		} else {
 			System.out.println("E' necessario indicare i seguenti paramenti: ");
 			System.out.println("1) path da analizzare");
-			System.out.println("2) Utilizzato per indircare lo Schema Xsd da utilizzare per la validazione (Opzionale, Default http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd)");
-			System.out.println("3) path in cui è installato il pacchetto ImageMagic (optionale)");
+			System.out.println("2) path in cui è installato il pacchetto ImageMagic");
+			System.out.println("3) percorso e nome file md5");
+			System.out.println("4) Utilizzato per indircare lo Schema Xsd da utilizzare per la validazione (Opzionale, Default http://www.bncf.firenze.sbn.it/SchemaXML/Mag/2.0.1/metadigit.xsd)");
 		}
 	}
 
@@ -105,18 +106,21 @@ public class CalcImgMagCmd {
 	private void calcImg(File f, File fileMd5){
 		MagXsd magXsd = null;
 		Metadigit mag = null;
+		String[] usages = null;
 		
 		try {
 			log.debug("\nAnalizzo il file ["+f.getAbsolutePath()+"]");
 			magXsd = new MagXsd(schemaXsd);
 			mag = magXsd.read(f);
+			usages = new String[1];
+			usages[0] = "3";
 			if (mag.getImg()!= null && mag.getImg().size()>0){
 				for (int x=0; x<mag.getImg().size(); x++){
 					try {
 						if (((x+1)%100)==0){
 							log.debug("\nImg. "+(x+1)+"/"+mag.getImg().size());
 						}
-						magXsd.calcImg(mag.getImg().get(x), f.getParentFile().getAbsolutePath(), fileMd5);
+						magXsd.calcImg(mag.getImg().get(x), false, f.getParentFile().getAbsolutePath(), usages, mag.getGen(), fileMd5);
 					} catch (XsdException e) {
 						log.error("["+f.getAbsolutePath()+" img "+(x+1)+"] "+e.getMessage(), e);
 					}
@@ -147,7 +151,7 @@ public class CalcImgMagCmd {
 				}
 			}
 			log.debug("\nImg. "+mag.getImg().size());
-			magXsd.write(mag, f, true, fileMd5);
+			magXsd.write(mag, f, false, true, fileMd5);
 		} catch (XsdException e) {
 			log.error("["+f.getAbsolutePath()+"] "+e.getMessage(), e);
 		} catch (PubblicaException e) {
