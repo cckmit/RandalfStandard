@@ -34,51 +34,48 @@ public abstract class RandalfTeiDCManoscrittoHistory extends RandalfTeiDCManoscr
 		String copista = "";
 		String carteggio = "";
 		String[] st = null;
-		
+
 		for (Object object : all) {
 			if (object instanceof Name) {
 				name = (Name) object;
 				if (name.getRole() != null && name.getRole().equals("luogo_di_copia")) {
-					
+
 					carteggio = ((Name) object).getContent().get(0);
-					
+
 					pos = carteggio.indexOf("$");
-					if ( pos > -1) {
-						luogo = cleanString(carteggio.substring(pos+1))+" ; "+
-								cleanString(carteggio.substring(0,pos));
+					if (pos > -1) {
+						luogo = cleanString(carteggio.substring(pos + 1)) + " ; " + cleanString(carteggio.substring(0, pos));
 						addPublisher(luogo);
 					} else {
 						addPublisher(cleanString(carteggio));
 					}
 
 				} else if (name.getRole() != null && name.getRole().equals("copista")) {
-					
+
 					carteggio = ((Name) object).getContent().get(0);
-					
+
 					pos = carteggio.indexOf("$");
-					if ( pos > -1) {
-						copista = cleanString(carteggio.substring(pos+1))+" ; "+
-								cleanString(carteggio.substring(0,pos));
-						addPublisher("copia "+copista);
+					if (pos > -1) {
+						copista = cleanString(carteggio.substring(pos + 1)) + " ; " + cleanString(carteggio.substring(0, pos));
+						addPublisher("copia " + copista);
 					} else {
-						addPublisher("copia "+cleanString(carteggio));
+						addPublisher("copia " + cleanString(carteggio));
 					}
 
-				} else if (name.getRole() != null && (name.getRole().equals("possessore") ||
-						name.getRole().equals("libraio"))) {
+				} else if (name.getRole() != null
+						&& (name.getRole().equals("possessore") || name.getRole().equals("libraio"))) {
 					carteggio = ((Name) object).getContent().get(0);
-					
+
 					carteggio = carteggio.replace("$$$$", "$");
 					carteggio = carteggio.replace("$$$", "$");
 					carteggio = carteggio.replace("$$", "$");
 					st = carteggio.split("\\$");
 
-					if (st.length>0) {
-						if (st.length==1) {
-							copista = cleanString(st[0])+" [possessore]";
+					if (st.length > 0) {
+						if (st.length == 1) {
+							copista = cleanString(st[0]) + " [possessore]";
 						} else {
-							copista = cleanString(st[0])+" <"+
-									cleanString(st[1])+"> [possessore]";
+							copista = cleanString(st[0]) + " <" + cleanString(st[1]) + "> [possessore]";
 						}
 						copista = copista.replace("\\'", "'");
 						addContributor(copista);
@@ -111,11 +108,11 @@ public abstract class RandalfTeiDCManoscrittoHistory extends RandalfTeiDCManoscr
 
 		origDate = p.getOrigDate(null);
 
-		if (origDate.getContent() != null && origDate.getContent().size() > 0
+		if (origDate != null && origDate.getContent() != null && origDate.getContent().size() > 0
 				&& !origDate.getContent().get(0).trim().equals("")) {
 			date = origDate.getContent().get(0).trim();
 			st = date.split("-");
-			for (String testo :st) {
+			for (String testo : st) {
 				addDate(testo.trim());
 			}
 		}

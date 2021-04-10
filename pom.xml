@@ -11,6 +11,7 @@
   	<module>RandalfSchedaF</module>
   	<module>RandalfTet</module>
   	<module>RandalfTei</module>
+  	<module>RandalfDSpace</module>
   </modules>
 	<distributionManagement>
 		<repository>
@@ -19,4 +20,10 @@
 			<url>http://maven.bncf.firenze.sbn.it/artifactory/libs-release-local</url>
 		</repository>
 	</distributionManagement>
+		<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.9</maven.compiler.source>
+		<maven.compiler.target>1.9</maven.compiler.target>
+	</properties>
+	
 </project>

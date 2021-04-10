@@ -29,11 +29,10 @@ public abstract class RandalfTeiDCManoscrittoPhysDesc
         if (!(msDesc instanceof MsPart)) {
           readDescriptionManoscritto(msDesc);
         }
-      } else {
-        format(physDesc.getObjectDesc().getSupportDesc());
       }
+      format(physDesc.getObjectDesc().getSupportDesc());
       if (physDesc.getP().getTerm("1", "Composito", null) != null) {
-
+      	System.out.println("SSSSSSS");
       }
     }
   }

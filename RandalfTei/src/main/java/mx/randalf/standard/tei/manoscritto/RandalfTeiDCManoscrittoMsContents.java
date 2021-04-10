@@ -24,6 +24,36 @@ public abstract class RandalfTeiDCManoscrittoMsContents
     if (msContents != null) {
       if (msContents.getMsItem() != null && msContents.getMsItem().size() > 0) {
         for (MsItem msItem : msContents.getMsItem()) {
+        	
+          if (msItem.getClazz() != null
+              && (!msItem.getClazz().equals("carteggio") &&
+              		!msItem.getClazz().equals("variantems") &&
+              		!msItem.getClazz().equals("locus")) ) {
+          	init(msItem.getAll());
+          }
+          if (msItem.getTitle().getType().equals("presente")) {
+          	for (String line : msItem.getTitle().getContent()) {
+          		addRelation("'titolo presente:' "+line);
+          	}
+          }
+          if (msItem.getTitle().getType().equals("elaborato")) {
+          	for (String line : msItem.getTitle().getContent()) {
+          		addRelation("'titolo elaborato:' "+line);
+          	}
+          }
+          if (msItem.getTitle().getType().equals("identificato")) {
+          	for (String line : msItem.getTitle().getContent()) {
+          		addRelation("'titolo identificato:' "+line);
+          	}
+          }
+          if (msItem.getTitle().getType().equals("aggiunto")) {
+          	for (String line : msItem.getTitle().getContent()) {
+          		addRelation("'titolo aggiunto:' "+line);
+          	}
+          }
+        	
+        	
+        	
           if (msItem.getClazz() != null
               && msItem.getClazz().equals("autografo")) {
             if (msItem.getHistory() != null

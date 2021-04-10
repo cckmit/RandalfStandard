@@ -8,51 +8,51 @@ import org.teic.ns._10.RespStmt;
 
 import mx.randalf.standard.tei.dc.RandalfTeiDCStru;
 
-public abstract class RandalfTeiDCManoscrittoMsItem
-    extends
-      RandalfTeiDCManoscrittoAll {
+public abstract class RandalfTeiDCManoscrittoMsItem extends RandalfTeiDCManoscrittoAll {
 
-  public RandalfTeiDCManoscrittoMsItem() {
-    super();
-  }
+	public RandalfTeiDCManoscrittoMsItem() {
+		super();
+	}
 
-  protected void initMsItem(MsItem msItem) {
+	protected void initMsItem(MsItem msItem) {
 
-    addStru(new RandalfTeiDCStru(msItem.getLocus(), msItem.getTitle(), msItem.getN()));
-    
-    initRespStmts(msItem.getRespStmts());
+		addStru(new RandalfTeiDCStru(msItem.getLocus(), msItem.getTitle(), msItem.getN()));
 
-    init(msItem.getAll());
-  }
+		initRespStmts(msItem.getRespStmts());
 
-  private void initRespStmts(List<Object> respStmts) {
-    List<Object> names = null;
-    Name name = null;
-    RespStmt respStmt = null;
-    int n = 0;
+		init(msItem.getAll());
+	}
 
-    if (respStmts != null) {
-      for (Object object : respStmts) {
-        respStmt = ((RespStmt) object);
-        names = respStmt.getNames(null);
+	private void initRespStmts(List<Object> respStmts) {
+		List<Object> names = null;
+		Name name = null;
+		RespStmt respStmt = null;
+		int n = 0;
 
-        for (Object object2 : names) {
-          name = (Name) object2;
-          if (name.getN().indexOf("_")>-1){
-            n = Integer.valueOf(name.getN().substring(0,name.getN().indexOf("_")).replace("_", ""));
-          } else {
-            n =Integer.valueOf(name.getN());
-          }
-          if (n > 3) {
-            if (name.getContent() != null && name.getContent().size() > 0
-                && !name.getContent().get(0).trim().equals("")) {
-              addContributor(name.getContent().get(0).trim());
-            }
-          }
-        }
-      }
-    }
-  }
+		if (respStmts != null) {
+			for (Object object : respStmts) {
+				respStmt = ((RespStmt) object);
+				names = respStmt.getNames(null);
+
+				for (Object object2 : names) {
+					name = (Name) object2;
+					if (name.getN() != null) {
+						if (name.getN().indexOf("_") > -1) {
+							n = Integer.valueOf(name.getN().substring(0, name.getN().indexOf("_")).replace("_", ""));
+						} else {
+							n = Integer.valueOf(name.getN());
+						}
+						if (n > 3) {
+							if (name.getContent() != null && name.getContent().size() > 0
+									&& !name.getContent().get(0).trim().equals("")) {
+								addContributor(name.getContent().get(0).trim());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 //  private void description(MsItem msItem) {
 //    Locus locus = null;
