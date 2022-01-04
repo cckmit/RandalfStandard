@@ -4,36 +4,28 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.randalf.mag</groupId>
 	<artifactId>RandalfMag</artifactId>
-	<version>2.0.9</version>
+	<version>2.0.10</version><!-- 2.0.9 -->
 	<description>Librerie utilizzate per la gestione dei tracciati Mag</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
-	<!-- <distributionManagement> <repository> <uniqueVersion>false</uniqueVersion> 
-		<id>sftp-repository-stable</id> <url>scpexe://maven.bncf.lan/var/www/maven.bncf.lan/repository/release</url> 
-		<layout>default</layout> </repository> </distributionManagement> <repositories> 
-		<repository> <snapshots> <enabled>false</enabled> </snapshots> <id>randalf.mx-release</id> 
-		<url>http://maven.bncf.lan/repository/release</url> </repository> </repositories> 
-		<build> <extensions> <extension> <groupId>org.apache.maven.wagon</groupId> 
-		<artifactId>wagon-ssh-external</artifactId> <version>1.0-beta-6</version> 
-		</extension> </extensions> </build> -->
 	<dependencies>
 		<dependency>
 			<groupId>mx.randalf.xsd</groupId>
 			<artifactId>RandalfXsd</artifactId>
-			<version>2.0.1</version>
+			<version>2.0.2</version><!-- 2.0.1 -->
 		</dependency>
 		<dependency>
 			<groupId>mx.randalf.digest</groupId>
 			<artifactId>RandalfDigest</artifactId>
-			<version>2.0.1</version>
+			<version>2.0.2</version><!-- 2.0.1 -->
 		</dependency>
 		<dependency>
 			<groupId>mx.randalf.digital</groupId>
 			<artifactId>RandalfDigital</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.3</version><!-- 2.0.2 -->
 		</dependency>
 	</dependencies>
 	<build>
@@ -47,6 +39,7 @@
 			</resource>
 		</resources>
 	</build>
+<!-- 
 	<distributionManagement>
 		<repository>
 			<id>mvn-bncf</id>
@@ -59,6 +52,7 @@
 		<artifactId>RandalfStandard</artifactId>
 		<version>2.0.0</version>
 	</parent>
+ -->	
 	<profiles>
 		<profile>
 			<id>default</id>
